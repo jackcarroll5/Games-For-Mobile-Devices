@@ -5,7 +5,7 @@ using UnityEngine;
 public class Controllable : MonoBehaviour
 {
     Renderer thisRenderer;
-    public bool chosen = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,27 +28,14 @@ public class Controllable : MonoBehaviour
 
     }
 
+
     internal void Deselect()
     {
-        bool IsSelected = false;
-
-        if (IsSelected)
-        {
-            chosen = false;
-            thisRenderer.material.color = Color.blue;
-            return;
-        }
+      thisRenderer.material.color = Color.grey; 
     }
 
-    internal void isSelected()
+    internal void IsSelected()
     {
-        bool IsSelected = true;
-
-        if(IsSelected)
-        {
-            chosen = true;
-            thisRenderer.material.color = Color.red; 
-            return;
-        }
+      thisRenderer.material.color = Color.red; 
     }
-}
+  }
