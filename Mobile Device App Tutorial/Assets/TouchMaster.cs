@@ -9,11 +9,12 @@ public class TouchMaster : MonoBehaviour
 
 	[SerializeField]
 	Controllable selectedItem;
-
-	float timer = 0.5f;
+	float timer = 5f;
 	bool has_hit_something = false;
 	bool isTouched = false;
 	bool timeEnd = false;
+	private float startTouchTime = 0f;
+	private float thresholdTapTime = 0.2f;
 
 	// Start is called before the first frame update
 	void Start()
@@ -39,7 +40,7 @@ public class TouchMaster : MonoBehaviour
 	  if(isTouched)
 	  {
 		timer -= Time.deltaTime;
-		//print(timer);
+		print("Current Time: " + timer);
 
 		if(timer <= 0)
 		{
@@ -55,9 +56,9 @@ public class TouchMaster : MonoBehaviour
 				if(timeEnd == false)
 				{			  
 				isTouched = true;
-				timer = 0.5f;
+				startTouchTime = Time.deltaTime;
 
-				Debug.Log("Touch count is : " + Input.touchCount + "\nTime elapsed since touch is : " + timer);
+				Debug.Log("Touch count is : " + Input.touchCount + "\nStart Touch Time : " + startTouchTime);
 
 				Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 				Debug.DrawRay(ray.origin, 20 * ray.direction);
@@ -90,15 +91,15 @@ public class TouchMaster : MonoBehaviour
 						if (!selectedItem)
 						{
 							selectedItem = null;
-							Debug.Log("Nothing is selected");
+							Debug.Log("Nothing is selected!");
 						}
 					}
 				  }
-                else
-                    {
-                        selectedItem.Deselect();
-                        Debug.Log("Nothing selected");
-                    }
+				else
+					{
+						selectedItem.Deselect();
+						Debug.Log("Nothing selected! Empty screen space selected");
+					}
 				}
 			}
 
@@ -106,6 +107,8 @@ public class TouchMaster : MonoBehaviour
 				{
 					Vector2 touchDeltaPos = Input.GetTouch(0).position;
 					double halfTheScreen = Screen.width / 2.0;
+
+				Vector3 touchingGameObjectPos = cam.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 10));
 
 					if (touchDeltaPos.x < halfTheScreen)
 					{
@@ -116,7 +119,9 @@ public class TouchMaster : MonoBehaviour
 						gameObject.transform.Translate(Vector3.right * 5 * Time.deltaTime);
 					}
 
-					Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchDeltaPos + "\nThe selected game object's position is " + gameObject.transform.position);
+				selectedItem.transform.position = Vector3.Lerp(selectedItem.transform.position,touchingGameObjectPos,Time.deltaTime);
+
+					Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);
 				}
 
 				if (Input.GetTouch(0).phase == TouchPhase.Stationary)
@@ -126,9 +131,16 @@ public class TouchMaster : MonoBehaviour
 
 				if (Input.GetTouch(0).phase == TouchPhase.Ended)
 				{
+					float timeTap = Time.deltaTime - startTouchTime;
+					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime);
+
 					isTouched = false;
-					Debug.Log("The touching has ended \nTimeUp: " + timeEnd);
-					timer = 0.5f;
+
+					if(timeTap <= thresholdTapTime)
+					{
+					//Indicates Tap at start of timer and end of timer when time is up
+					  Debug.Log("Tap officially determined and spotted \nThe time is up: " + timeEnd);
+					}
 				}
 		}
 	}
