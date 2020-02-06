@@ -9,12 +9,16 @@ public class TouchMaster : MonoBehaviour
 
 	[SerializeField]
 	Controllable selectedItem;
-	float timer = 5f;
+	float timer = 10f;
 	bool has_hit_something = false;
 	bool isTouched = false;
 	bool timeEnd = false;
 	private float startTouchTime = 0f;
-	private float thresholdTapTime = 0.2f;
+	private float thresholdTapTime = 0.1f;
+	bool isDragging = false;
+	private Transform objToDrag;
+	private float distance;
+	Vector3 offset;
 
 	// Start is called before the first frame update
 	void Start()
@@ -34,37 +38,41 @@ public class TouchMaster : MonoBehaviour
 
 	}*/
 
+	//Rotation through axis - Camera.main.transform.forward
+	//Sin,Cos,Tan
+	//float start_angle - Start Phase
+	//Quaternion start_rotation = transform.rotation
+	//float new_angle - Moved Phase
+	//float diff_angle = new_angle - start_angle (Moved phase)
+	//transform.rotation = Quaternion.Angle(rotation_axis,diff_angle) * start_rotation
+
 	// Update is called once per frame
 	void Update()
 	{
-	  if(isTouched)
-	  {
-		timer -= Time.deltaTime;
-		print("Current Time: " + timer);
-
-		if(timer <= 0)
-		{
-			timeEnd = true;
-			print("Time is up");
-		}
-	  }
-
 		if (Input.touchCount > 0)
 		{
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 			{
 				if(timeEnd == false)
 				{			  
-				isTouched = true;
-				startTouchTime = Time.deltaTime;
+					isTouched = true;
+					startTouchTime = Time.deltaTime;
+					Vector3 objPos = Input.GetTouch(0).position;
 
-				Debug.Log("Touch count is : " + Input.touchCount + "\nStart Touch Time : " + startTouchTime);
+					if (Input.touchCount != 1)
+					{
+						isDragging = false;
+						return;
+					}
 
-				Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-				Debug.DrawRay(ray.origin, 20 * ray.direction);
+					Debug.Log("Touch count is : " + Input.touchCount + "\nStart Touch Time : " + startTouchTime);
 
-				RaycastHit info_on_hit;
-				has_hit_something = Physics.Raycast(ray, out info_on_hit);
+					Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+					Debug.DrawRay(ray.origin, 20 * ray.direction);
+
+					RaycastHit info_on_hit;
+
+					has_hit_something = Physics.Raycast(ray, out info_on_hit);
 
 				if (has_hit_something)
 				{
@@ -94,6 +102,13 @@ public class TouchMaster : MonoBehaviour
 							Debug.Log("Nothing is selected!");
 						}
 					}
+
+						objToDrag = hit_object.transform;
+						distance = hit_object.transform.position.z - cam.transform.position.z;
+						Vector3 vector = new Vector3(objPos.x, objPos.y, distance);
+						vector = cam.ScreenToWorldPoint(vector);
+						offset = objToDrag.position - vector;
+						isDragging = true;
 				  }
 				else
 					{
@@ -103,12 +118,14 @@ public class TouchMaster : MonoBehaviour
 				}
 			}
 
-			if (Input.GetTouch(0).phase == TouchPhase.Moved)
+			if (Input.GetTouch(0).phase == TouchPhase.Moved && isDragging)
 				{
 					Vector2 touchDeltaPos = Input.GetTouch(0).position;
 					double halfTheScreen = Screen.width / 2.0;
 
-				Vector3 touchingGameObjectPos = cam.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, 10));
+				Vector3 touchingGameObjectPos = cam.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distance));
+				objToDrag.position = touchingGameObjectPos
+					 + offset;
 
 					if (touchDeltaPos.x < halfTheScreen)
 					{
@@ -129,12 +146,25 @@ public class TouchMaster : MonoBehaviour
 					Debug.Log("The touching is stationary");
 				}
 
-				if (Input.GetTouch(0).phase == TouchPhase.Ended)
+				if (Input.GetTouch(0).phase == TouchPhase.Ended && isDragging)
 				{
-					float timeTap = Time.deltaTime - startTouchTime;
-					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime);
+					/*if (isTouched)
+					{
+						timer -= Time.deltaTime;
+						print("Current Time: " + timer);
 
+						if (timer <= 0)
+						{
+							timeEnd = true;
+							print("Time is up");
+						}
+					}*/
 					isTouched = false;
+					isDragging = false;
+					timer = 0.0f;
+
+					float timeTap = Time.deltaTime - startTouchTime;
+					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime + "\nTime Threshold: " + thresholdTapTime + "\nStarting Time: " + startTouchTime);
 
 					if(timeTap <= thresholdTapTime)
 					{
