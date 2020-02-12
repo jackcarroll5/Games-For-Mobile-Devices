@@ -15,15 +15,28 @@ public class TouchMaster : MonoBehaviour
 	bool timeEnd = false;
 	private float startTouchTime = 0f;
 	private float thresholdTapTime = 0.1f;
+
 	bool isDragging = false;
 	private Transform objToDrag;
 	private float distance;
 	Vector3 offset;
 
+	private float rotVelocityX = 0.0f;
+	private float rotVelocityY = 0.0f;
+	bool isRotating = false;
+
+	[SerializeField]
+	float rotationSpeed = 5.0f;
+
+	[SerializeField]
+	float movingSpeed = 0.1f;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		cam = Camera.main;
+
+		Screen.orientation = ScreenOrientation.Portrait;
 	}
 
 	/*public void select_item(Controllable new_item)
@@ -51,12 +64,16 @@ public class TouchMaster : MonoBehaviour
 	{
 		if (Input.touchCount > 0)
 		{
+			timer += Time.deltaTime;
+
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 			{
 				if(timeEnd == false)
 				{			  
 					isTouched = true;
 					startTouchTime = Time.deltaTime;
+					timer = 0f;
+					isRotating = false;
 					Vector3 objPos = Input.GetTouch(0).position;
 
 					if (Input.touchCount != 1)
@@ -127,6 +144,9 @@ public class TouchMaster : MonoBehaviour
 				objToDrag.position = touchingGameObjectPos
 					 + offset;
 
+				//Alt to Drag - Distance to Object
+				/*Vector3 distObj = Vector3.Distance(selectedItem.transform.position, cam.transform.position);*/
+
 					if (touchDeltaPos.x < halfTheScreen)
 					{
 						gameObject.transform.Translate(Vector3.left * 5 * Time.deltaTime);
@@ -138,40 +158,72 @@ public class TouchMaster : MonoBehaviour
 
 				selectedItem.transform.position = Vector3.Lerp(selectedItem.transform.position,touchingGameObjectPos,Time.deltaTime);
 
-					Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);
+					/*Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);*/
+
+				if(Input.touchCount == 2)
+				{
+					Rotation_Movement();
 				}
+		
+			}
 
 				if (Input.GetTouch(0).phase == TouchPhase.Stationary)
 				{
 					Debug.Log("The touching is stationary");
 				}
 
-				if (Input.GetTouch(0).phase == TouchPhase.Ended && isDragging)
+				if (Input.GetTouch(0).phase == TouchPhase.Ended && !isDragging)
 				{
 					/*if (isTouched)
 					{
 						timer -= Time.deltaTime;
-						print("Current Time: " + timer);
+						print("Current Time: " + timer);*/
 
-						if (timer <= 0)
+						if (timer < 0 )
 						{
 							timeEnd = true;
 							print("Time is up");
 						}
-					}*/
+					//}
 					isTouched = false;
 					isDragging = false;
-					timer = 0.0f;
+					timer = 0f;
 
 					float timeTap = Time.deltaTime - startTouchTime;
 					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime + "\nTime Threshold: " + thresholdTapTime + "\nStarting Time: " + startTouchTime);
 
 					if(timeTap <= thresholdTapTime)
-					{
+					{  
 					//Indicates Tap at start of timer and end of timer when time is up
 					  Debug.Log("Tap officially determined and spotted \nThe time is up: " + timeEnd);
 					}
+
+				Rotate_End();
 				}
+		}
+	}
+
+	private void Rotation_Movement()
+	{
+		selectedItem.transform.Rotate(Input.GetTouch(0).deltaPosition.y * rotationSpeed, -Input.GetTouch(0).deltaPosition.x,0,Space.World);
+
+		isRotating = true;
+	}
+
+	private void Rotate_End()
+	{
+		float timeTouchItemEnd = 0f;
+		if (isRotating == true)
+		{
+			if(Mathf.Abs(Input.GetTouch(0).deltaPosition.y) >= 3)
+			{
+				rotVelocityY = Input.GetTouch(0).deltaPosition.y / Input.GetTouch(0).deltaTime;
+			}
+			if(Mathf.Abs(Input.GetTouch(0).deltaPosition.y) >= 3)
+			{
+				rotVelocityX = Input.GetTouch(0).deltaPosition.x / Input.GetTouch(0).deltaTime;
+			}
+			timeTouchItemEnd = Time.time;
 		}
 	}
 }
