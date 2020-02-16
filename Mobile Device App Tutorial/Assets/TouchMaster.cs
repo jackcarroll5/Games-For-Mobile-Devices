@@ -14,22 +14,30 @@ public class TouchMaster : MonoBehaviour
 	bool isTouched = false;
 	bool timeEnd = false;
 	private float startTouchTime = 0f;
-	private float thresholdTapTime = 0.1f;
+	private readonly float thresholdTapTime = 0.1f;
 
 	bool isDragging = false;
 	private Transform objToDrag;
 	private float distance;
 	Vector3 offset;
 
+	float startDist;
+
+	Vector3 initScale;
+
+
 	private float rotVelocityX = 0.0f;
 	private float rotVelocityY = 0.0f;
 	bool isRotating = false;
 
 	[SerializeField]
-	float rotationSpeed = 5.0f;
+	float rotationSpeed = 0.1f;
 
 	[SerializeField]
 	float movingSpeed = 0.1f;
+
+	Quaternion start_orientation;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -37,6 +45,12 @@ public class TouchMaster : MonoBehaviour
 		cam = Camera.main;
 
 		Screen.orientation = ScreenOrientation.Portrait;
+
+		Touch t1 = Input.GetTouch(0);
+		Touch t2 = Input.GetTouch(0);
+
+		float start_angle = Mathf.Atan2(t2.position.y - t1.position.y, t2.position.x - t1.position.x);
+
 	}
 
 	/*public void select_item(Controllable new_item)
@@ -51,13 +65,6 @@ public class TouchMaster : MonoBehaviour
 
 	}*/
 
-	//Rotation through axis - Camera.main.transform.forward
-	//Sin,Cos,Tan
-	//float start_angle - Start Phase
-	//Quaternion start_rotation = transform.rotation
-	//float new_angle - Moved Phase
-	//float diff_angle = new_angle - start_angle (Moved phase)
-	//transform.rotation = Quaternion.Angle(rotation_axis,diff_angle) * start_rotation
 
 	// Update is called once per frame
 	void Update()
@@ -74,7 +81,21 @@ public class TouchMaster : MonoBehaviour
 					startTouchTime = Time.deltaTime;
 					timer = 0f;
 					isRotating = false;
+
+					start_orientation = selectedItem.transform.rotation;
+
+
+					//Rotation through axis - Camera.main.transform.forward
+					//Sin,Cos,Tan
+					
+					
+					//Inverse Tan multiplied by degree of values
+
+
 					Vector3 objPos = Input.GetTouch(0).position;
+
+					initScale = selectedItem.transform.localScale;
+
 
 					if (Input.touchCount != 1)
 					{
@@ -160,11 +181,12 @@ public class TouchMaster : MonoBehaviour
 
 					/*Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);*/
 
-				if(Input.touchCount == 2)
+				if(Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved))
 				{
 					Rotation_Movement();
-				}
-		
+					Scale_Object();
+							
+				}	
 			}
 
 				if (Input.GetTouch(0).phase == TouchPhase.Stationary)
@@ -198,32 +220,44 @@ public class TouchMaster : MonoBehaviour
 					  Debug.Log("Tap officially determined and spotted \nThe time is up: " + timeEnd);
 					}
 
-				Rotate_End();
 				}
 		}
 	}
 
 	private void Rotation_Movement()
 	{
-		selectedItem.transform.Rotate(Input.GetTouch(0).deltaPosition.y * rotationSpeed, -Input.GetTouch(0).deltaPosition.x,0,Space.World);
+		float currentAngle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
+
+		float start_angle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
+
+		float angle = currentAngle - start_angle;
+
+		angle = currentAngle * Mathf.Rad2Deg;
+
+		selectedItem.transform.rotation = Quaternion.AngleAxis(angle, cam.transform.forward) * start_orientation;
 
 		isRotating = true;
 	}
 
-	private void Rotate_End()
+	public void Scale_Object()
 	{
-		float timeTouchItemEnd = 0f;
-		if (isRotating == true)
-		{
-			if(Mathf.Abs(Input.GetTouch(0).deltaPosition.y) >= 3)
-			{
-				rotVelocityY = Input.GetTouch(0).deltaPosition.y / Input.GetTouch(0).deltaTime;
-			}
-			if(Mathf.Abs(Input.GetTouch(0).deltaPosition.y) >= 3)
-			{
-				rotVelocityX = Input.GetTouch(0).deltaPosition.x / Input.GetTouch(0).deltaTime;
-			}
-			timeTouchItemEnd = Time.time;
-		}
+		Touch touch1 = Input.GetTouch(0);
+		Touch touch2 = Input.GetTouch(1);
+
+		// Find the position in the previous frame of each touch.
+		Vector2 touchOnePrevPos = touch1.position - touch1.deltaPosition;
+		Vector2 touchTwoPrevPos = touch2.position - touch2.deltaPosition;
+
+		// Find the magnitude of the vector (the distance) between the touches in each frame.
+		float prevTouchDeltaMag = (touchOnePrevPos - touchTwoPrevPos).magnitude;
+		float touchDeltaMag = (touch1.position - touch2.position).magnitude;
+
+		// Find the difference in the distances between each frame.
+		float deltaMagDiff = prevTouchDeltaMag - touchDeltaMag;
+
+		selectedItem.transform.localScale = new Vector3(deltaMagDiff, deltaMagDiff, deltaMagDiff);
+
+
 	}
+
 }
