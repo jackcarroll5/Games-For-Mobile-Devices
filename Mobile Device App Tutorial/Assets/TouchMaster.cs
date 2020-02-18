@@ -11,7 +11,7 @@ public class TouchMaster : MonoBehaviour
 	Controllable selectedItem;
 	float timer = 10f;
 	bool has_hit_something = false;
-	bool isTouched = false;
+	public bool isTouched = false;
 	bool timeEnd = false;
 	private float startTouchTime = 0f;
 	private readonly float thresholdTapTime = 0.1f;
@@ -21,28 +21,44 @@ public class TouchMaster : MonoBehaviour
 	private float distance;
 	Vector3 offset;
 
-	float startDist;
+	public float startDist;
 
-	Vector3 initScale;
+	public Vector3 initScale;
 
+	Vector3 point1;
+    Vector3 point2;
+	public float angleX = 0.0f;
+	public float angleY = 0.0f;
+	float xAngleTemp = 0.0f;
+	float yAngleTemp = 0.0f;
 
-	private float rotVelocityX = 0.0f;
-	private float rotVelocityY = 0.0f;
-	bool isRotating = false;
+	//private float rotVelocityX = 0.0f;
+	//private float rotVelocityY = 0.0f;
+	public bool isRotating = false;
 
-	[SerializeField]
-	float rotationSpeed = 0.1f;
+	//[SerializeField]
+	//float rotationSpeed = 0.1f;
+	public Quaternion localRot;
 
 	[SerializeField]
 	float movingSpeed = 0.1f;
 
 	Quaternion start_orientation;
 
+	public float zoomPersPSpeed = 0.3f;
+	public float zoomOrthoSpeed = 0.3f;
+
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		cam = Camera.main;
+		angleX = 0.0f;
+		angleY = 0.0f;
+
+		cam.transform.rotation = Quaternion.Euler(angleX, angleY, 0.0f);
+
+		localRot = selectedItem.transform.rotation;
 
 		Screen.orientation = ScreenOrientation.Portrait;
 
@@ -69,9 +85,11 @@ public class TouchMaster : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		//cam.transform.Rotate(Input.acceleration.x, 0, 0);
 		if (Input.touchCount > 0)
 		{
 			timer += Time.deltaTime;
+			
 
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 			{
@@ -93,9 +111,14 @@ public class TouchMaster : MonoBehaviour
 
 
 					Vector3 objPos = Input.GetTouch(0).position;
+					
 
 					initScale = selectedItem.transform.localScale;
 
+					point1 = Input.GetTouch(0).position;
+
+					xAngleTemp = angleX;
+					yAngleTemp = angleY;
 
 					if (Input.touchCount != 1)
 					{
@@ -156,14 +179,15 @@ public class TouchMaster : MonoBehaviour
 				}
 			}
 
-			if (Input.GetTouch(0).phase == TouchPhase.Moved && isDragging)
-				{
+		if (Input.GetTouch(0).phase == TouchPhase.Moved && isDragging)
+			{
+				if (selectedItem)
+				{ 
 					Vector2 touchDeltaPos = Input.GetTouch(0).position;
 					double halfTheScreen = Screen.width / 2.0;
 
-				Vector3 touchingGameObjectPos = cam.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distance));
-				objToDrag.position = touchingGameObjectPos
-					 + offset;
+					Vector3 touchingGameObjectPos = cam.ScreenToWorldPoint(new Vector3(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, distance));
+					objToDrag.position = touchingGameObjectPos + offset;
 
 				//Alt to Drag - Distance to Object
 				/*Vector3 distObj = Vector3.Distance(selectedItem.transform.position, cam.transform.position);*/
@@ -177,16 +201,44 @@ public class TouchMaster : MonoBehaviour
 						gameObject.transform.Translate(Vector3.right * 5 * Time.deltaTime);
 					}
 
-				selectedItem.transform.position = Vector3.Lerp(selectedItem.transform.position,touchingGameObjectPos,Time.deltaTime);
+					selectedItem.transform.position = Vector3.Lerp(selectedItem.transform.position,touchingGameObjectPos,Time.deltaTime);
+				}
+					//Camera Rotation with no object selected
+				
+				/*Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);*/
 
-					/*Debug.Log("Movement from the touch is happening \nThe touch delta position while moving is " + touchingGameObjectPos + "\nThe selected game object's position is " + selectedItem.transform.position);*/
-
-				if(Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved))
+				if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved))
 				{
-					Rotation_Movement();
-					Scale_Object();
+					Debug.Log("Two touches are made");
+					if(selectedItem)
+					{
+						AccelerometerRot();
+						Rotation_Movement();
+						Scale_Object();
+					}
 							
-				}	
+				}
+			}
+
+			else if (Input.GetTouch(0).phase == TouchPhase.Moved && !isDragging)
+			{
+				if(Input.touchCount == 1)
+				{
+					Vector2 touchDragPos = Input.GetTouch(0).deltaPosition;
+					cam.transform.Translate(-touchDragPos.x * movingSpeed, -touchDragPos.y * movingSpeed, 0);
+				}
+
+				if (Input.touchCount == 2)
+				{
+					Camera_Zoom();
+
+					point2 = Input.GetTouch(0).position;
+
+					angleX = xAngleTemp + (point2.x - point1.x) * 180 / Screen.width;
+
+					angleY = yAngleTemp + (point2.y - point1.y) * 90 / Screen.height;
+					cam.transform.rotation = Quaternion.Euler(angleY, angleX, 0.0f);
+				}
 			}
 
 				if (Input.GetTouch(0).phase == TouchPhase.Stationary)
@@ -224,13 +276,38 @@ public class TouchMaster : MonoBehaviour
 		}
 	}
 
+	private void Camera_Zoom()
+	{
+		Touch toucher1 = Input.GetTouch(0);
+		Touch toucher2 = Input.GetTouch(1);
+
+		Vector2 touchOneLastPos = toucher1.position - toucher1.deltaPosition;
+		Vector2 touchTwoLastPos = toucher2.position - toucher2.deltaPosition;
+
+		float lastTouchMagDelta = (touchOneLastPos - touchTwoLastPos).magnitude;
+		float touchMagDelta = (toucher1.position - toucher2.position).magnitude;
+
+		float deltaMagDiff = touchMagDelta - lastTouchMagDelta;
+
+		if(cam.orthographic)
+		{
+			cam.orthographicSize += deltaMagDiff * zoomOrthoSpeed;
+			cam.orthographicSize = Mathf.Max(cam.orthographicSize, 0.1f);
+		}
+		else
+		{
+			cam.fieldOfView += deltaMagDiff * zoomPersPSpeed;
+			cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.1f, 180.0f);
+		}
+	}
+
 	private void Rotation_Movement()
 	{
 		float currentAngle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
 
 		float start_angle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
 
-		float angle = currentAngle - start_angle;
+		float angle = (currentAngle - start_angle) * Mathf.Rad2Deg;
 
 		angle = currentAngle * Mathf.Rad2Deg;
 
@@ -239,24 +316,33 @@ public class TouchMaster : MonoBehaviour
 		isRotating = true;
 	}
 
+	public void AccelerometerRot()
+	{
+		float speedAcc = 0.5f;
+		float currentSpeed = Time.deltaTime * speedAcc;
+
+		localRot.x += Input.acceleration.x * currentSpeed;
+		localRot.y += Input.acceleration.y * currentSpeed;
+
+		selectedItem.transform.rotation = localRot;
+	}
+
 	public void Scale_Object()
 	{
 		Touch touch1 = Input.GetTouch(0);
 		Touch touch2 = Input.GetTouch(1);
 
-		// Find the position in the previous frame of each touch.
 		Vector2 touchOnePrevPos = touch1.position - touch1.deltaPosition;
 		Vector2 touchTwoPrevPos = touch2.position - touch2.deltaPosition;
 
-		// Find the magnitude of the vector (the distance) between the touches in each frame.
-		float prevTouchDeltaMag = (touchOnePrevPos - touchTwoPrevPos).magnitude;
-		float touchDeltaMag = (touch1.position - touch2.position).magnitude;
+		float previousTouchDeltaMag = (touchOnePrevPos - touchTwoPrevPos).magnitude;
+		float touchingDeltaMag = (touch1.position - touch2.position).magnitude;
 
-		// Find the difference in the distances between each frame.
-		float deltaMagDiff = prevTouchDeltaMag - touchDeltaMag;
+		float deltaMagDiff = touchingDeltaMag - previousTouchDeltaMag;
 
-		selectedItem.transform.localScale = new Vector3(deltaMagDiff, deltaMagDiff, deltaMagDiff);
+		Vector3 scaleNew = selectedItem.transform.localScale - new Vector3(deltaMagDiff, deltaMagDiff, deltaMagDiff);
 
+		selectedItem.transform.localScale = scaleNew;
 
 	}
 
