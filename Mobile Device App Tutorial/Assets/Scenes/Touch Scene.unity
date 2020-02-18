@@ -222,7 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1023112992}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f53c11b06f32fe4b9735e02d6b42604, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e81f84a848e1804b81759cb321e8332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1528341414
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1528341414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f53c11b06f32fe4b9735e02d6b42604, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e81f84a848e1804b81759cb321e8332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2036600223
@@ -530,11 +530,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2105188782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b559f29bc68fc5459034dcd11c9ee9f, type: 3}
+  m_Script: {fileID: 11500000, guid: cddf11aa049761a419565c09652c29af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   selectedItem: {fileID: 1528341419}
-  rotationSpeed: 180
+  rotationSpeed: 0.1
   movingSpeed: 0.1
 --- !u!4 &2105188784
 Transform:
