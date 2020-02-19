@@ -45,8 +45,10 @@ public class TouchMaster : MonoBehaviour
 
 	Quaternion start_orientation;
 
-	public float zoomPersPSpeed = 0.3f;
-	public float zoomOrthoSpeed = 0.3f;
+	public float zoomPersPSpeed = 0.05f;
+	public float zoomOrthoSpeed = 0.05f;
+
+	Vector3 startPosObject;
 
 
 	// Start is called before the first frame update
@@ -61,6 +63,8 @@ public class TouchMaster : MonoBehaviour
 		localRot = selectedItem.transform.rotation;
 
 		Screen.orientation = ScreenOrientation.Portrait;
+
+	    startPosObject = selectedItem.transform.position;
 
 		Touch t1 = Input.GetTouch(0);
 		Touch t2 = Input.GetTouch(0);
