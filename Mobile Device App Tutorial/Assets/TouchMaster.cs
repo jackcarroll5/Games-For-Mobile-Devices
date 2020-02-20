@@ -100,15 +100,10 @@ public class TouchMaster : MonoBehaviour
 		selectedItem.transform.rotation = localRot;
 	}
 
-	public void accelerometerSelectedObjectAlt()
-	{
-		selectedItem.transform.Rotate(-Input.acceleration.x, 0, -Input.acceleration.z);
-	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		 accelerometerSelectedObjectAlt();
 		//cam.transform.Rotate(Input.acceleration.x, 0, 0);
 		if (Input.touchCount > 0)
 		{
