@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cddf11aa049761a419565c09652c29af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedItem: {fileID: 1528341419}
+  selectedItem: {fileID: 657067764}
   isTouched: 0
   startDist: 0
   initScale: {x: 0, y: 0, z: 0}
@@ -663,6 +663,7 @@ MonoBehaviour:
   movingSpeed: 0.1
   zoomPersPSpeed: 0.05
   zoomOrthoSpeed: 0.05
+  startPosObject: {x: 0, y: 0, z: 0}
 --- !u!4 &2105188784
 Transform:
   m_ObjectHideFlags: 0

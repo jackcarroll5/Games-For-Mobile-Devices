@@ -7,9 +7,10 @@ public class TouchMaster : MonoBehaviour
 {
 	Camera cam;
 
+
 	[SerializeField]
 	Controllable selectedItem;
-	float timer = 10f;
+	float timer = 0.5f;
 	bool has_hit_something = false;
 	public bool isTouched = false;
 	bool timeEnd = false;
@@ -32,6 +33,8 @@ public class TouchMaster : MonoBehaviour
 	float xAngleTemp = 0.0f;
 	float yAngleTemp = 0.0f;
 
+	private float speedAccelerometer = 0.5f;
+
 	//private float rotVelocityX = 0.0f;
 	//private float rotVelocityY = 0.0f;
 	public bool isRotating = false;
@@ -48,7 +51,7 @@ public class TouchMaster : MonoBehaviour
 	public float zoomPersPSpeed = 0.05f;
 	public float zoomOrthoSpeed = 0.05f;
 
-	Vector3 startPosObject;
+	public Vector3 startPosObject;
 
 
 	// Start is called before the first frame update
@@ -85,40 +88,57 @@ public class TouchMaster : MonoBehaviour
 
 	}*/
 
+	public void accelerometerSelectedObject()
+	{
+		float speedAcc = 0.8f;
+
+		float presentSpeed = Time.deltaTime * speedAcc;
+
+		localRot.x = Input.acceleration.y * presentSpeed;
+		localRot.y = Input.acceleration.x * presentSpeed;
+
+		selectedItem.transform.rotation = localRot;
+	}
+
+	public void accelerometerSelectedObjectAlt()
+	{
+		selectedItem.transform.Rotate(-Input.acceleration.x, 0, -Input.acceleration.z);
+	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		 accelerometerSelectedObjectAlt();
 		//cam.transform.Rotate(Input.acceleration.x, 0, 0);
 		if (Input.touchCount > 0)
 		{
-			timer += Time.deltaTime;
-			
+			/*if (isTouched)
+			{
+				timer -= Time.deltaTime;
+				print("Current Time: " + timer);
+			}*/
 
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 			{
+				/*if(timer < 0)
+				{*/
 				if(timeEnd == false)
 				{			  
 					isTouched = true;
 					startTouchTime = Time.deltaTime;
-					timer = 0f;
+					timer = 0.5f;
 					isRotating = false;
 
 					start_orientation = selectedItem.transform.rotation;
 
-
 					//Rotation through axis - Camera.main.transform.forward
 					//Sin,Cos,Tan
-					
-					
+			
 					//Inverse Tan multiplied by degree of values
 
-
 					Vector3 objPos = Input.GetTouch(0).position;
-					
-
+			
 					initScale = selectedItem.transform.localScale;
-
 					point1 = Input.GetTouch(0).position;
 
 					xAngleTemp = angleX;
@@ -168,6 +188,9 @@ public class TouchMaster : MonoBehaviour
 						}
 					}
 
+						//accelerometerSelectedObject();
+						
+
 						objToDrag = hit_object.transform;
 						distance = hit_object.transform.position.z - cam.transform.position.z;
 						Vector3 vector = new Vector3(objPos.x, objPos.y, distance);
@@ -180,7 +203,8 @@ public class TouchMaster : MonoBehaviour
 						selectedItem.Deselect();
 						Debug.Log("Nothing selected! Empty screen space selected");
 					}
-				}
+				  }
+				//}
 			}
 
 		if (Input.GetTouch(0).phase == TouchPhase.Moved && isDragging)
@@ -216,7 +240,6 @@ public class TouchMaster : MonoBehaviour
 					Debug.Log("Two touches are made");
 					if(selectedItem)
 					{
-						AccelerometerRot();
 						Rotation_Movement();
 						Scale_Object();
 					}
@@ -252,20 +275,9 @@ public class TouchMaster : MonoBehaviour
 
 				if (Input.GetTouch(0).phase == TouchPhase.Ended && !isDragging)
 				{
-					/*if (isTouched)
-					{
-						timer -= Time.deltaTime;
-						print("Current Time: " + timer);*/
-
-						if (timer < 0 )
-						{
-							timeEnd = true;
-							print("Time is up");
-						}
-					//}
 					isTouched = false;
 					isDragging = false;
-					timer = 0f;
+					timer = 0.5f;
 
 					float timeTap = Time.deltaTime - startTouchTime;
 					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime + "\nTime Threshold: " + thresholdTapTime + "\nStarting Time: " + startTouchTime);
@@ -318,17 +330,6 @@ public class TouchMaster : MonoBehaviour
 		selectedItem.transform.rotation = Quaternion.AngleAxis(angle, cam.transform.forward) * start_orientation;
 
 		isRotating = true;
-	}
-
-	public void AccelerometerRot()
-	{
-		float speedAcc = 0.5f;
-		float currentSpeed = Time.deltaTime * speedAcc;
-
-		localRot.x += Input.acceleration.x * currentSpeed;
-		localRot.y += Input.acceleration.y * currentSpeed;
-
-		selectedItem.transform.rotation = localRot;
 	}
 
 	public void Scale_Object()
