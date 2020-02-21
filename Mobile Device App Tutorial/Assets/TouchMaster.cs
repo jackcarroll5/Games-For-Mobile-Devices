@@ -117,7 +117,7 @@ public class TouchMaster : MonoBehaviour
 			{
 				/*if(timer < 0)
 				{*/
-				if(timeEnd == false)
+				if (timeEnd == false)
 				{			  
 					isTouched = true;
 					startTouchTime = Time.deltaTime;
@@ -183,15 +183,14 @@ public class TouchMaster : MonoBehaviour
 						}
 					}
 
-						//accelerometerSelectedObject();
-						
-
 						objToDrag = hit_object.transform;
 						distance = hit_object.transform.position.z - cam.transform.position.z;
 						Vector3 vector = new Vector3(objPos.x, objPos.y, distance);
 						vector = cam.ScreenToWorldPoint(vector);
 						offset = objToDrag.position - vector;
 						isDragging = true;
+
+						
 				  }
 				else
 					{
@@ -232,7 +231,6 @@ public class TouchMaster : MonoBehaviour
 
 				if (Input.touchCount == 2 && (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(1).phase == TouchPhase.Moved))
 				{
-					Debug.Log("Two touches are made");
 					if(selectedItem)
 					{
 						Rotation_Movement();
@@ -254,6 +252,7 @@ public class TouchMaster : MonoBehaviour
 				{
 					Camera_Zoom();
 
+					//Camera Rotation when object not selected
 					point2 = Input.GetTouch(0).position;
 
 					angleX = xAngleTemp + (point2.x - point1.x) * 180 / Screen.width;

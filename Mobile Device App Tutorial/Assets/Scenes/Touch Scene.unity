@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 657067764}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Hit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -315,7 +315,7 @@ Transform:
   m_GameObject: {fileID: 657067759}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.4, y: 3.98, z: 6.17}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5177, y: 1.5177, z: 1.5177}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -344,7 +344,6 @@ GameObject:
   - component: {fileID: 710070616}
   - component: {fileID: 710070615}
   - component: {fileID: 710070614}
-  - component: {fileID: 710070618}
   - component: {fileID: 710070619}
   m_Layer: 0
   m_Name: CylinderAccelerometer
@@ -421,24 +420,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 710070613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.25, y: 3.74, z: 8.16}
+  m_LocalPosition: {x: 9.23, y: 4.01, z: 3.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &710070618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 710070613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e81f84a848e1804b81759cb321e8332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &710070619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,7 +453,7 @@ GameObject:
   - component: {fileID: 1023112997}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Hit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -538,8 +525,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1023112992}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.99, y: 4.31, z: 1.5370946}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -8.21, y: 4.31, z: 2.55}
+  m_LocalScale: {x: 2.2128, y: 2.2128, z: 2.2128}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -643,7 +630,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1528341414}
   m_LocalRotation: {x: -0, y: -0.20296653, z: -0, w: 0.9791857}
-  m_LocalPosition: {x: -1.81, y: 4.18, z: 2.77}
+  m_LocalPosition: {x: -2.29, y: 4.18, z: 3.86}
   m_LocalScale: {x: 2.3448, y: 2.3448, z: 2.3448}
   m_Children: []
   m_Father: {fileID: 0}
@@ -845,6 +832,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2105188784}
   - component: {fileID: 2105188783}
+  - component: {fileID: 2105188785}
   m_Layer: 0
   m_Name: TouchMaster
   m_TagString: Untagged
@@ -890,3 +878,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2105188785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105188782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26731aa72ef92954098d95dc7945147b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  go: {fileID: 1528341418}

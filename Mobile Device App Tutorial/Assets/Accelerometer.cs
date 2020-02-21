@@ -13,11 +13,11 @@ public class Accelerometer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        accelerometerSelectedObjectAlt();
     }
 
     public void accelerometerSelectedObjectAlt()
     {
-        transform.Rotate(-Input.acceleration.x * 0.03f, -Input.acceleration.y * 0.03f, -Input.acceleration.z * 0.05f);
+        transform.Translate(-Input.acceleration.x * 0.05f, -Input.acceleration.y * 0.05f, -Input.acceleration.z * 0.07f);
     }
 }
