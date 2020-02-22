@@ -10,6 +10,7 @@ public class TouchMaster : MonoBehaviour
 
 	[SerializeField]
 	Controllable selectedItem;
+	public GameObject objSel;
 	float timer = 0.5f;
 	bool has_hit_something = false;
 	public bool isTouched = false;
@@ -26,6 +27,10 @@ public class TouchMaster : MonoBehaviour
 
 	public Vector3 initScale;
 
+	public float initDist;
+
+	public float startFingerDist;
+
 	Vector3 point1;
     Vector3 point2;
 	public float angleX = 0.0f;
@@ -39,21 +44,24 @@ public class TouchMaster : MonoBehaviour
 	//private float rotVelocityY = 0.0f;
 	public bool isRotating = false;
 
+
 	//[SerializeField]
 	//float rotationSpeed = 0.1f;
 	public Quaternion localRot;
+	float start_angle;
 
 	[SerializeField]
 	float movingSpeed = 0.1f;
 
 	Quaternion start_orientation;
 
-	public float zoomPersPSpeed = 0.05f;
-	public float zoomOrthoSpeed = 0.05f;
+	public float zoomPersPSpeed = 0.03f;
+	public float zoomOrthoSpeed = 0.03f;
 
 	public Vector3 startPosObject;
 
-
+	Vector2 touch1;
+	Vector2 touch2;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -70,9 +78,12 @@ public class TouchMaster : MonoBehaviour
 	    startPosObject = selectedItem.transform.position;
 
 		Touch t1 = Input.GetTouch(0);
-		Touch t2 = Input.GetTouch(0);
+		Touch t2 = Input.GetTouch(1);
 
-		float start_angle = Mathf.Atan2(t2.position.y - t1.position.y, t2.position.x - t1.position.x);
+	    touch1 = Input.GetTouch(0).position;
+	    touch2 = Input.GetTouch(1).position;
+
+		start_angle = Mathf.Atan2(t2.position.y - t1.position.y, t2.position.x - t1.position.x);
 
 	}
 
@@ -126,16 +137,19 @@ public class TouchMaster : MonoBehaviour
 
 					start_orientation = selectedItem.transform.rotation;
 
+					//initDist = (touch1 - touch2).sqrMagnitude;
+
 					//Rotation through axis - Camera.main.transform.forward
 					//Sin,Cos,Tan
 			
 					//Inverse Tan multiplied by degree of values
 
 					Vector3 objPos = Input.GetTouch(0).position;
-			
-					initScale = selectedItem.transform.localScale;
-					point1 = Input.GetTouch(0).position;
 
+					startFingerDist = Vector2.Distance(touch1, touch2);
+					initScale = selectedItem.transform.localScale;
+
+					point1 = Input.GetTouch(0).position;
 					xAngleTemp = angleX;
 					yAngleTemp = angleY;
 
@@ -157,6 +171,7 @@ public class TouchMaster : MonoBehaviour
 				if (has_hit_something)
 				{
 					Controllable hit_object = info_on_hit.transform.GetComponent<Controllable>();
+					objSel = info_on_hit.collider.gameObject;
 
 					if (hit_object)
 					{
@@ -233,7 +248,7 @@ public class TouchMaster : MonoBehaviour
 				{
 					if(selectedItem)
 					{
-						Rotation_Movement();
+						//Rotation_Movement();
 						Scale_Object();
 					}
 							
@@ -307,7 +322,7 @@ public class TouchMaster : MonoBehaviour
 		else
 		{
 			cam.fieldOfView += deltaMagDiff * zoomPersPSpeed;
-			cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.1f, 180.0f);
+			cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.12f, 180.0f);
 		}
 	}
 
@@ -315,11 +330,7 @@ public class TouchMaster : MonoBehaviour
 	{
 		float currentAngle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
 
-		float start_angle = Mathf.Atan2(Input.GetTouch(1).position.y - Input.GetTouch(0).position.y, Input.GetTouch(1).position.x - Input.GetTouch(0).position.x);
-
 		float angle = (currentAngle - start_angle) * Mathf.Rad2Deg;
-
-		angle = currentAngle * Mathf.Rad2Deg;
 
 		selectedItem.transform.rotation = Quaternion.AngleAxis(angle, cam.transform.forward) * start_orientation;
 
@@ -328,6 +339,25 @@ public class TouchMaster : MonoBehaviour
 
 	public void Scale_Object()
 	{
+		//Vector2 t1 = Input.GetTouch(0).position;
+		//Vector2 t2 = Input.GetTouch(1).position;
+
+		/*float currentFingerDist = Vector2.Distance(touch1, touch2);
+
+		float factorScale = currentFingerDist / startFingerDist;
+
+		selectedItem.transform.localScale = initScale * factorScale;*/
+
+		/*float newDist = (t1 - t2).sqrMagnitude;
+
+		float changeDist = newDist - initDist;
+		float percentageChange = changeDist / initDist;
+
+		Vector3 scaleNew = selectedItem.transform.localScale;
+		scaleNew += percentageChange * selectedItem.transform.localScale;
+
+		selectedItem.transform.localScale = scaleNew;*/
+
 		Touch touch1 = Input.GetTouch(0);
 		Touch touch2 = Input.GetTouch(1);
 

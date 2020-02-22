@@ -5,7 +5,6 @@ using UnityEngine;
 public class CloneObjectThreeTouch : MonoBehaviour
 {
     public Transform go;
-    Camera cam;
     float minZVal;
     float maxZVal;
     float minYVal;
@@ -16,7 +15,7 @@ public class CloneObjectThreeTouch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-        cam = Camera.main;
+ 
     }
 
     // Update is called once per frame
@@ -27,7 +26,7 @@ public class CloneObjectThreeTouch : MonoBehaviour
             Vector3 offset = new Vector3(Random.Range(minXVal, maxXVal),
                 Random.Range(minYVal, maxYVal), Random.Range(minZVal, maxZVal));
 
-           Instantiate(go,  transform.position + offset, Quaternion.identity);
+           Instantiate(go, transform.position + offset, Quaternion.identity);
         }      
     }
 }
