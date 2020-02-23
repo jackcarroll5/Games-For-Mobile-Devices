@@ -7,7 +7,6 @@ public class TouchMaster : MonoBehaviour
 {
 	Camera cam;
 
-
 	[SerializeField]
 	Controllable selectedItem;
 	public GameObject objSel;
@@ -17,6 +16,7 @@ public class TouchMaster : MonoBehaviour
 	bool timeEnd = false;
 	private float startTouchTime = 0f;
 	private readonly float thresholdTapTime = 0.1f;
+	float targetDist;
 
 	bool isDragging = false;
 	private Transform objToDrag;
@@ -24,9 +24,7 @@ public class TouchMaster : MonoBehaviour
 	Vector3 offset;
 
 	public float startDist;
-
 	public Vector3 initScale;
-
 	public float initDist;
 
 	public float startFingerDist;
@@ -84,7 +82,6 @@ public class TouchMaster : MonoBehaviour
 	    touch2 = Input.GetTouch(1).position;
 
 		start_angle = Mathf.Atan2(t2.position.y - t1.position.y, t2.position.x - t1.position.x);
-
 	}
 
 	/*public void select_item(Controllable new_item)
@@ -203,9 +200,7 @@ public class TouchMaster : MonoBehaviour
 						Vector3 vector = new Vector3(objPos.x, objPos.y, distance);
 						vector = cam.ScreenToWorldPoint(vector);
 						offset = objToDrag.position - vector;
-						isDragging = true;
-
-						
+						isDragging = true;					
 				  }
 				else
 					{
@@ -248,7 +243,7 @@ public class TouchMaster : MonoBehaviour
 				{
 					if(selectedItem)
 					{
-						//Rotation_Movement();
+						Rotation_Movement();
 						Scale_Object();
 					}
 							
@@ -259,25 +254,45 @@ public class TouchMaster : MonoBehaviour
 			{
 				if(Input.touchCount == 1)
 				{
+					//float maxXLeft = -13.0f;
+					//float maxXRight = 14.0f;
+					//float maxYLeft = -7.0f;
+					//float maxYRight = 18.0f;
+
 					Vector2 touchDragPos = Input.GetTouch(0).deltaPosition;
 					cam.transform.Translate(-touchDragPos.x * movingSpeed, -touchDragPos.y * movingSpeed, 0);
+
+					/*Vector3 tempPosX = cam.transform.position;
+					tempPosX.x = Mathf.Clamp(tempPosX.x, maxXLeft, maxXRight);
+					cam.transform.position = tempPosX;
+
+
+					Vector3 tempPosY = cam.transform.position;
+					tempPosY.y = Mathf.Clamp(tempPosY.y, maxYLeft, maxYRight);
+					cam.transform.position = tempPosY;*/
 				}
 
 				if (Input.touchCount == 2)
 				{
 					Camera_Zoom();
 
-					//Camera Rotation when object not selected
-					point2 = Input.GetTouch(0).position;
-
-					angleX = xAngleTemp + (point2.x - point1.x) * 180 / Screen.width;
-
-					angleY = yAngleTemp + (point2.y - point1.y) * 90 / Screen.height;
-					cam.transform.rotation = Quaternion.Euler(angleY, angleX, 0.0f);
+					
 				}
 			}
 
-				if (Input.GetTouch(0).phase == TouchPhase.Stationary)
+			if (Input.touchCount == 3)
+			{
+				//Camera Rotation when object not selected
+				point2 = Input.GetTouch(0).position;
+
+				angleX = xAngleTemp + (point2.x - point1.x) * 180 / Screen.width;
+
+				angleY = yAngleTemp + (point2.y - point1.y) * 90 / Screen.height;
+				cam.transform.rotation = Quaternion.Euler(angleY, angleX, 0.0f);
+
+			}			
+
+			if (Input.GetTouch(0).phase == TouchPhase.Stationary)
 				{
 					Debug.Log("The touching is stationary");
 				}
@@ -314,15 +329,19 @@ public class TouchMaster : MonoBehaviour
 
 		float deltaMagDiff = touchMagDelta - lastTouchMagDelta;
 
+		float rateZoom = 5.0f;
+
+		targetDist += deltaMagDiff * Time.deltaTime * rateZoom * 0.0025f * Mathf.Abs(targetDist);
+
 		if(cam.orthographic)
 		{
 			cam.orthographicSize += deltaMagDiff * zoomOrthoSpeed;
-			cam.orthographicSize = Mathf.Max(cam.orthographicSize, 0.1f);
+			cam.orthographicSize = Mathf.Max(cam.orthographicSize, 0.08f);
 		}
 		else
 		{
 			cam.fieldOfView += deltaMagDiff * zoomPersPSpeed;
-			cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.12f, 180.0f);
+			cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 0.08f, 180.0f);
 		}
 	}
 
@@ -372,7 +391,5 @@ public class TouchMaster : MonoBehaviour
 		Vector3 scaleNew = selectedItem.transform.localScale - new Vector3(deltaMagDiff, deltaMagDiff, deltaMagDiff);
 
 		selectedItem.transform.localScale = scaleNew;
-
 	}
-
 }
