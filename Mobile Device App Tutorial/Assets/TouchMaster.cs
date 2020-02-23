@@ -10,12 +10,14 @@ public class TouchMaster : MonoBehaviour
 	[SerializeField]
 	Controllable selectedItem;
 	public GameObject objSel;
-	float timer = 0.5f;
+	public float timer = 0.5f;
 	bool has_hit_something = false;
 	public bool isTouched = false;
 	bool timeEnd = false;
+
 	private float startTouchTime = 0f;
-	private readonly float thresholdTapTime = 0.1f;
+	private readonly float thresholdTapTime = 0.3f;
+
 	float targetDist;
 
 	bool isDragging = false;
@@ -35,8 +37,6 @@ public class TouchMaster : MonoBehaviour
 	public float angleY = 0.0f;
 	float xAngleTemp = 0.0f;
 	float yAngleTemp = 0.0f;
-
-	private float speedAccelerometer = 0.5f;
 
 	//private float rotVelocityX = 0.0f;
 	//private float rotVelocityY = 0.0f;
@@ -115,11 +115,10 @@ public class TouchMaster : MonoBehaviour
 		//cam.transform.Rotate(Input.acceleration.x, 0, 0);
 		if (Input.touchCount > 0)
 		{
-			/*if (isTouched)
+			if (isTouched)
 			{
 				timer -= Time.deltaTime;
-				print("Current Time: " + timer);
-			}*/
+			}
 
 			if (Input.GetTouch(0).phase == TouchPhase.Began)
 			{
@@ -130,6 +129,7 @@ public class TouchMaster : MonoBehaviour
 					isTouched = true;
 					startTouchTime = Time.deltaTime;
 					timer = 0.5f;
+
 					isRotating = false;
 
 					start_orientation = selectedItem.transform.rotation;
@@ -205,7 +205,7 @@ public class TouchMaster : MonoBehaviour
 				else
 					{
 						selectedItem.Deselect();
-						Debug.Log("Nothing selected! Empty screen space selected");
+						//Debug.Log("Nothing selected! Empty screen space selected");
 					}
 				  }
 				//}
@@ -274,13 +274,11 @@ public class TouchMaster : MonoBehaviour
 
 				if (Input.touchCount == 2)
 				{
-					Camera_Zoom();
-
-					
+					Camera_Zoom();			
 				}
 			}
 
-			if (Input.touchCount == 3)
+			if (Input.touchCount == 4)
 			{
 				//Camera Rotation when object not selected
 				point2 = Input.GetTouch(0).position;
@@ -297,22 +295,28 @@ public class TouchMaster : MonoBehaviour
 					Debug.Log("The touching is stationary");
 				}
 
-				if (Input.GetTouch(0).phase == TouchPhase.Ended && !isDragging)
+				if (Input.GetTouch(0).phase == TouchPhase.Ended)
 				{
-					isTouched = false;
+				    timer = 0f;
+				    isTouched = false;
 					isDragging = false;
-					timer = 0.5f;
-
+					
 					float timeTap = Time.deltaTime - startTouchTime;
+				    startTouchTime = 0f;
 					Debug.Log("Time for end tap: " + timeTap + "\nDeltaTime: " + Time.deltaTime + "\nTime Threshold: " + thresholdTapTime + "\nStarting Time: " + startTouchTime);
 
-					if(timeTap <= thresholdTapTime)
-					{  
+					if(timeTap > 0 && timeTap <= thresholdTapTime)
+					{
+					  timeEnd = false;
 					//Indicates Tap at start of timer and end of timer when time is up
-					  Debug.Log("Tap officially determined and spotted \nThe time is up: " + timeEnd);
+					  Debug.Log("Tap officially determined and spotted \nThe time is not up: " + timeEnd);
 					}
-
-				}
+					else
+					{
+					timeEnd = true;
+					Debug.Log("Not a tap! Time's Up!");
+					}
+			  }
 		}
 	}
 
