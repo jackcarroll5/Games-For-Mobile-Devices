@@ -34,10 +34,6 @@ public class AdReward : MonoBehaviour, IUnityAdsListener
     {
        
     }
-   public void ShowRewardedVideo()
-    {
-        Advertisement.Show(myPlacementID);
-    }
 
     public void OnUnityAdsReady(string placementId)
     {
@@ -50,8 +46,6 @@ public class AdReward : MonoBehaviour, IUnityAdsListener
     // Start is called before the first frame update
    public void Start()
     {
-
-        Advertisement.IsReady(myPlacementID);
         Advertisement.AddListener(this);
         Advertisement.Initialize(gameID, test);
         Debug.Log("Unity Ads initialized: " + Advertisement.isInitialized);
