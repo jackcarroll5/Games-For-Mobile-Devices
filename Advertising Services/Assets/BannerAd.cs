@@ -15,12 +15,13 @@ public class BannerAd : MonoBehaviour
         StartCoroutine(ShowBannerWhenReady());
     }
 
-    IEnumerator ShowBannerWhenReady()
+   public IEnumerator ShowBannerWhenReady()
     {
         while (!Advertisement.IsReady(placementId))
         {
             yield return new WaitForSeconds(0.5f);
         }
+        Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
         Advertisement.Banner.Show(placementId);
     }
     // Update is called once per frame

@@ -48,7 +48,6 @@ public class AdReward : MonoBehaviour, IUnityAdsListener
     {
         Advertisement.AddListener(this);
         Advertisement.Initialize(gameID, test);
-        Debug.Log("Unity Ads initialized: " + Advertisement.isInitialized);
     }
 
     // Update is called once per frame
