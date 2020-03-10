@@ -34,6 +34,11 @@ public class BannerButton : MonoBehaviour, IUnityAdsListener
         StartCoroutine(ShowBannerWhenReady());
     }
 
+    public void BannerAdChoice()
+    {
+
+    }
+
     public IEnumerator ShowBannerWhenReady()
     {
         while (!Advertisement.IsReady(placementId))

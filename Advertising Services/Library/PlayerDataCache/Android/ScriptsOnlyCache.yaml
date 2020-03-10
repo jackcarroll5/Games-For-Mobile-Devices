@@ -1,16 +1,20 @@
 ScriptsOnlyBuild:
   usedScripts:
+    Assembly-CSharp-Editor.dll:
+    - GoogleMobileAds.Editor.GoogleMobileAdsSettings
     Assembly-CSharp.dll:
-    - AdInterstitial
-    - AdReward
     - AdRewardButton
-    - BannerAd
     - BannerButton
     - BeginAd
+    - GoogleAdmobMediator
+    - GoogleMobileAds.Common.MobileAdsEventExecutor
     - InterstitialButton
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
+    UnityEngine.Advertisements.dll:
+    - UnityEngine.Advertisements.Placeholder
+    - UnityEngine.Advertisements.Platform.Editor.BannerPlaceholder
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -42,33 +46,31 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9712}
+      Script: {instanceID: 9768}
     - Class: 114
-      Script: {instanceID: 9776}
+      Script: {instanceID: 9950}
     - Class: 114
-      Script: {instanceID: 9882}
+      Script: {instanceID: 9996}
     - Class: 114
-      Script: {instanceID: 9926}
+      Script: {instanceID: 10434}
     - Class: 114
-      Script: {instanceID: 10282}
+      Script: {instanceID: 10598}
     - Class: 114
-      Script: {instanceID: 10332}
+      Script: {instanceID: 10722}
     - Class: 114
-      Script: {instanceID: 10734}
+      Script: {instanceID: 10784}
     - Class: 114
-      Script: {instanceID: 10994}
+      Script: {instanceID: 10836}
     - Class: 114
-      Script: {instanceID: 11206}
+      Script: {instanceID: 10888}
     - Class: 114
-      Script: {instanceID: 11220}
+      Script: {instanceID: 11182}
     - Class: 114
-      Script: {instanceID: 11270}
+      Script: {instanceID: 11436}
     - Class: 114
-      Script: {instanceID: 11606}
+      Script: {instanceID: 11490}
     - Class: 114
-      Script: {instanceID: 15620}
-    - Class: 114
-      Script: {instanceID: 15736}
+      Script: {instanceID: 11846}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -298,6 +300,12 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
+      Hash: a4ab59432e1a3dc5dedbe8c4cf11d8ef
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BannerButton
+  - hash:
+      serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -317,15 +325,33 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: InterstitialButton
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: 078a65833f5c566d07f091b415bc3511
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GoogleAdmobMediator
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: RemoteTestResultSender
+  - hash:
+      serializedVersion: 2
+      Hash: 6fb512c6733e02f441372611e6f94f11
+    assemblyName: Assembly-CSharp-Editor.dll
+    namespaceName: GoogleMobileAds.Editor
+    className: GoogleMobileAdsSettings
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -410,6 +436,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: TimelineAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: GoogleMobileAds.Common
+    className: MobileAdsEventExecutor
   - hash:
       serializedVersion: 2
       Hash: 3b760e6526e13f7504f59e210145899a
@@ -560,18 +592,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: InterstitialButton
-  - hash:
-      serializedVersion: 2
-      Hash: a4ab59432e1a3dc5dedbe8c4cf11d8ef
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: BannerButton
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
