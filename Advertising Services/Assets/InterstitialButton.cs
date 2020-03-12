@@ -13,7 +13,7 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsDidError(string message)
     {
-        throw new System.NotImplementedException();
+   
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
@@ -34,12 +34,12 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsDidStart(string placementId)
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public void OnUnityAdsReady(string placementId)
     {
-        throw new System.NotImplementedException();
+    
     }
 
     public void ShowInterstitial()

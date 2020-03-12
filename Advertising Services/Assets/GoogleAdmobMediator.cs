@@ -2,60 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System;
 
 public class GoogleAdmobMediator : MonoBehaviour
 {
-    private BannerView banner;
-
-    [SerializeField]
-    private string appId = "ca-app-pub-9359698886030361~1643908833";
-
-    [SerializeField]
-    private string bannerId = "ca-app-pub-9359698886030361/7521538589";
-
-    [SerializeField]
-    private string intersititalId= "ca-app-pub-9359698886030361/5746805378";
-
+    public BannerView bannerView;
     // Start is called before the first frame update
-    void Start()
+   public void Start()
     {
-        
-    }
+        string appId = "ca-app-pub-3940256099942544~3347511713";
 
-    public void OnClickShowBannerAd()
-    {
-        this.BannerRequest();
-    }
-
-    public void OnClickShowInterstitial()
-    {
-        this.InterstitialRequest();
-    }
-
-
-    private void BannerRequest()
-    {
-        banner = new BannerView(bannerId, AdSize.Banner, AdPosition.Bottom);
-
-        AdRequest adRequest = new AdRequest.Builder().Build();
-
-        banner.LoadAd(adRequest);
-        
-    }
-
-    private void InterstitialRequest()
-    {
-        InterstitialAd ad = new InterstitialAd(intersititalId);
-
-        AdRequest adRequest = new AdRequest.Builder().Build();
-
-        ad.LoadAd(adRequest);
-    }
-
-    private void Awake()
-    {
         MobileAds.Initialize(appId);
+
+        RequestBanner();
     }
+    public void HandleOnAdLoaded(object sender, EventArgs args)
+    {
+        MonoBehaviour.print("HandleAdLoaded event received");
+    }
+
+    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    {
+        MonoBehaviour.print("HandleFailedToReceiveAd event received with message: "
+                            + args.Message);
+    }
+
+    public void HandleOnAdOpened(object sender, EventArgs args)
+    {
+        MonoBehaviour.print("HandleAdOpened event received");
+    }
+
+    public void HandleOnAdClosed(object sender, EventArgs args)
+    {
+        MonoBehaviour.print("HandleAdClosed event received");
+    }
+
+    public void HandleOnAdLeavingApplication(object sender, EventArgs args)
+    {
+        MonoBehaviour.print("HandleAdLeavingApplication event received");
+    }
+
+    public void RequestBanner()
+    {
+        string adUnitId = "ca-app-pub-3940256099942544/6300978111";
+        
+        this.bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+
+        ////// Called when an ad request has successfully loaded.
+       this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
+        ////// Called when an ad request failed to load.
+       this.bannerView.OnAdFailedToLoad += this.HandleOnAdFailedToLoad;
+        ////// Called when an ad is clicked.
+        this.bannerView.OnAdOpening += this.HandleOnAdOpened;
+        ////// Called when the user returned from the app after an ad click.
+        this.bannerView.OnAdClosed += this.HandleOnAdClosed;
+        ////// Called when the ad click caused the user to leave the application.
+       this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
+
+        // Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().Build();
+
+        // Load the banner with the request.
+        this.bannerView.LoadAd(request);
+
+    }
+
 
     // Update is called once per frame
     void Update()

@@ -41,17 +41,17 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
-        throw new System.NotImplementedException();
+   
     }
 
     public void OnUnityAdsDidError(string message)
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public void OnUnityAdsDidStart(string placementId)
     {
-        throw new System.NotImplementedException();
+       
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
