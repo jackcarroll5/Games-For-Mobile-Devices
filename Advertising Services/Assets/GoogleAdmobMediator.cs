@@ -37,13 +37,6 @@ public class GoogleAdmobMediator : MonoBehaviour
         RequestInterstitial();
     }
 
-    public void OnGetMorePointsClicked()
-    {
-        button.interactable = false;
-        button.GetComponentInChildren<Text>().text = "Loading...";
-        RequestLoadRewardedAd();
-    }
-
     private void RequestLoadRewardedAd()
     {
         string adUnitId = "ca-app-pub-3940256099942544/5224354917";
@@ -86,14 +79,14 @@ public class GoogleAdmobMediator : MonoBehaviour
 
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
-        UserChoseToWatchAd();
+        
     }
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        //RequestLoadRewardedAd();
+        RequestLoadRewardedAd();
 
-        button.GetComponentInChildren<Text>().text = "More Points";
+       button.GetComponentInChildren<Text>().text = "More Points";
 
         rewardedAd.OnAdLoaded -= this.HandleRewardedAdLoaded;
         rewardedAd.OnUserEarnedReward -= this.HandleOnAdRewarded;

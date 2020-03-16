@@ -7,14 +7,10 @@ ScriptsOnlyBuild:
     - BannerButton
     - BeginAd
     - GoogleAdmobMediator
-    - GoogleMobileAds.Common.MobileAdsEventExecutor
     - InterstitialButton
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
-    UnityEngine.Advertisements.dll:
-    - UnityEngine.Advertisements.Placeholder
-    - UnityEngine.Advertisements.Platform.Editor.BannerPlaceholder
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
