@@ -7,11 +7,10 @@ using UnityEngine.UI;
 
 public class GoogleAdmobMediator : MonoBehaviour
 {
-    Button button;
     private InterstitialAd interstitial;
     public BannerView bannerView;
     private RewardedAd rewardedAd;
-    public Text rewardText;
+    public Text adStatusText;
     private int amountGame = 0;
     private int amountReward = 0;
 
@@ -29,12 +28,21 @@ public class GoogleAdmobMediator : MonoBehaviour
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
-       
+        ShowBanner();
+        adStatusText.text = "Banner Ad has loaded";
     }
 
-    public void HandleOnAdClosed(object sender, EventArgs args)
+    public void HandleOnAdFailedToLoad(object sender, EventArgs args)
     {
+        adStatusText.text = "Banner Ad failed to load";
+        RequestBanner();
+    }
+
+
+    public void HandleOnAdClosed(object sender, EventArgs args)
+    { 
         RequestInterstitial();
+        adStatusText.text = "Interstitial Ad is closed";
     }
 
     private void RequestLoadRewardedAd()
@@ -72,25 +80,20 @@ public class GoogleAdmobMediator : MonoBehaviour
 
     public void HandleOnAdRewarded(object sender, EventArgs args)
     {//user finished watching ad
-        int points = int.Parse(rewardText.text);
+       /* int points = int.Parse(adStatusText.text);
         points += 50; //add 50 points
-        rewardText.text = points.ToString();
+        adStatusText.text = points.ToString();*/
     }
 
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
-        
+ 
     }
 
     private void HandleRewardedAdClosed(object sender, EventArgs args)
     {
         RequestLoadRewardedAd();
-
-       button.GetComponentInChildren<Text>().text = "More Points";
-
-        rewardedAd.OnAdLoaded -= this.HandleRewardedAdLoaded;
-        rewardedAd.OnUserEarnedReward -= this.HandleOnAdRewarded;
-        rewardedAd.OnAdClosed -= this.HandleRewardedAdClosed;
+        adStatusText.text = "Rewarded Ad is closed";
     }
 
     private void HandleUserEarnedReward(object sender, Reward args)
@@ -103,6 +106,8 @@ public class GoogleAdmobMediator : MonoBehaviour
     {
         if (rewardedAd.IsLoaded())
             rewardedAd.Show();
+        else
+            print("Reward based video ad has not been loaded yet");
     }
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -118,9 +123,8 @@ public class GoogleAdmobMediator : MonoBehaviour
 
     public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
     {
-        MonoBehaviour.print(
-            "HandleRewardedAdFailedToLoad event received with message: "
-                             + args.Message);
+        adStatusText.text = "Rewarded Ad failed to load";
+        RequestLoadRewardedAd();
     }
 
     public void HandleRewardedAdOpening(object sender, EventArgs args)
@@ -130,9 +134,7 @@ public class GoogleAdmobMediator : MonoBehaviour
 
     public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
-        MonoBehaviour.print(
-            "HandleRewardedAdFailedToShow event received with message: "
-                             + args.Message);
+       
     }
 
     public void HandleOnAdLeavingApplication(object sender, EventArgs args)
@@ -140,22 +142,22 @@ public class GoogleAdmobMediator : MonoBehaviour
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
 
+    public void ShowBanner()
+    {
+        bannerView.Show();
+    }
+
     public void RequestBanner()
     {
         string adUnitId = "ca-app-pub-3940256099942544/6300978111";
         
         this.bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
-
-        ////// Called when an ad request has successfully loaded.
-       this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
         ////// Called when an ad request failed to load.
        this.bannerView.OnAdFailedToLoad += this.HandleOnAdFailedToLoad;
         ////// Called when an ad is clicked.
         this.bannerView.OnAdOpening += this.HandleOnAdOpened;
         ////// Called when the ad click caused the user to leave the application.
        this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
-
-
 
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
@@ -176,8 +178,6 @@ public class GoogleAdmobMediator : MonoBehaviour
 
         // Called when an ad request has successfully loaded.
         this.interstitial.OnAdLoaded += HandleOnAdLoaded;
-        // Called when an ad request failed to load.
-        this.interstitial.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         // Called when an ad is shown.
         this.interstitial.OnAdOpening += HandleOnAdOpened;
         // Called when the ad is closed.
@@ -194,6 +194,8 @@ public class GoogleAdmobMediator : MonoBehaviour
     {
         if (interstitial.IsLoaded())
             interstitial.Show();
+        else
+          print("Interstitial Ad has not been loaded yet");
     }
 
     // Update is called once per frame
@@ -202,7 +204,7 @@ public class GoogleAdmobMediator : MonoBehaviour
      if(amountReward > 0)
         {
             amountGame += amountReward;
-            rewardText.text = amountGame.ToString();
+            adStatusText.text = amountGame.ToString();
             amountReward = 0;
         }
     }

@@ -56,13 +56,19 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
+        Debug.Log("Rewarded Ad closed");
         if (showResult == ShowResult.Finished)
         {
+            if(placementId == myPlacementID)
+            { 
             // Reward the user for watching the ad to completion.
+            Debug.Log("Ad has been finished! Reward Received");
+            }
         }
         else if (showResult == ShowResult.Skipped)
         {
             // Do not reward the user for skipping the ad.
+            Debug.Log("Ad has been skipped! No reward");
         }
         else if (showResult == ShowResult.Failed)
         {

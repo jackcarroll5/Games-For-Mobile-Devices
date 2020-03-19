@@ -10,6 +10,7 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
     string gameId = "3483542";
     bool testMode = true;
     Button button;
+    public string interstitialID = "interstitial";
 
     public void OnUnityAdsDidError(string message)
     {
@@ -18,13 +19,19 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
+        Debug.Log("Interstitial Ad closed");
         if (showResult == ShowResult.Finished)
         {
+            if(placementId == interstitialID)
+            {
             // Reward the user for watching the ad to completion.
+            Debug.Log("Ad has been finished! Reward Received");
+            }
         }
         else if (showResult == ShowResult.Skipped)
         {
             // Do not reward the user for skipping the ad.
+            Debug.Log("Ad has been skipped! No reward");
         }
         else if (showResult == ShowResult.Failed)
         {
@@ -53,7 +60,7 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
         button = GetComponent<Button>();
 
         // Set interactivity to be dependent on the Placement’s status:
-        button.interactable = Advertisement.IsReady();
+        button.interactable = Advertisement.IsReady(interstitialID);
 
         // Map the ShowRewardedVideo function to the button’s click listener:
         if (button)

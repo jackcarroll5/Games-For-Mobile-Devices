@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb4fcf747df058409d1e912df409dac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardText: {fileID: 1530356294}
+  adStatusText: {fileID: 1530356294}
 --- !u!114 &223974232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -326,6 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311d8b777ef4f3543be60b5eafdcaa22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interstitialID: interstitial
 --- !u!114 &223974235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1108,7 +1109,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 223974229}
-        m_MethodName: RequestBanner
+        m_MethodName: ShowBanner
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1714,7 +1715,7 @@ GameObject:
   - component: {fileID: 1530356295}
   - component: {fileID: 1530356294}
   m_Layer: 5
-  m_Name: Score
+  m_Name: AdStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1751,7 +1752,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: Ad Log
 --- !u!222 &1530356295
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1776,7 +1777,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 81, y: -228}
+  m_AnchoredPosition: {x: 23, y: -210}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1871714577
