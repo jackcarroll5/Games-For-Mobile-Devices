@@ -25,17 +25,17 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
             if(placementId == interstitialID)
             {
             // Reward the user for watching the ad to completion.
-            Debug.Log("Ad has been finished! Reward Received");
+            Debug.Log("Ad is finished!");
             }
         }
         else if (showResult == ShowResult.Skipped)
         {
             // Do not reward the user for skipping the ad.
-            Debug.Log("Ad has been skipped! No reward");
+            Debug.Log("Interstitial Ad has been skipped! No reward");
         }
         else if (showResult == ShowResult.Failed)
         {
-            Debug.LogWarning("The ad did not finish due to an error.");
+            Debug.LogWarning("The ad didn't finish due to an error.");
         }
     }
 
@@ -57,6 +57,10 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Unity Ads initialized: " + Advertisement.isInitialized);
+        Debug.Log("Unity Ads is supported: " + Advertisement.isSupported);
+        Debug.Log("Unity Ads test mode enabled: " + testMode);
+
         button = GetComponent<Button>();
 
         // Set interactivity to be dependent on the Placement’s status:

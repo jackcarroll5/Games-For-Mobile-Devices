@@ -14,6 +14,10 @@ public class BannerButton : MonoBehaviour, IUnityAdsListener
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Unity Ads initialized: " + Advertisement.isInitialized);
+        Debug.Log("Unity Ads is supported: " + Advertisement.isSupported);
+        Debug.Log("Unity Ads test mode enabled: " + testMode);
+
         button = GetComponent<Button>();
 
         // Set interactivity to be dependent on the Placement’s status:

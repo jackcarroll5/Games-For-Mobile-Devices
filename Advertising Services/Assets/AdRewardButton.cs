@@ -14,6 +14,9 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Unity Ads initialized: " + Advertisement.isInitialized);
+        Debug.Log("Unity Ads is supported: " + Advertisement.isSupported);
+
         button = GetComponent<Button>();
 
         // Set interactivity to be dependent on the Placement’s status:
@@ -62,13 +65,13 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
             if(placementId == myPlacementID)
             { 
             // Reward the user for watching the ad to completion.
-            Debug.Log("Ad has been finished! Reward Received");
+            Debug.Log("Rewarded Ad has been finished! Reward Received");
             }
         }
         else if (showResult == ShowResult.Skipped)
         {
             // Do not reward the user for skipping the ad.
-            Debug.Log("Ad has been skipped! No reward");
+            Debug.Log("Rewarded Ad has been skipped! No reward");
         }
         else if (showResult == ShowResult.Failed)
         {
