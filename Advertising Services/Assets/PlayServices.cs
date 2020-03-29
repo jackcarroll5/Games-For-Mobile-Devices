@@ -12,6 +12,7 @@ public class PlayServices : MonoBehaviour
     int pts = 0;
     public Text scoreText;
     public string leaderboardGame;
+    public string achID;
 
     // Start is called before the first frame update
     void Start()
@@ -35,8 +36,6 @@ public class PlayServices : MonoBehaviour
         PlayGamesPlatform.DebugLogEnabled = true;
 
         PlayGamesPlatform.Activate();
-
-        SignInToServices();
     }
 
     public void DisplayAchievements()
@@ -44,7 +43,7 @@ public class PlayServices : MonoBehaviour
         Social.ShowAchievementsUI();
     }
 
-    public void UnlockAchievements(string achID)
+    public void UnlockAchievements()
     {
         // unlock achievement (achievement ID "Cfjewijawiu_QA")
         Social.ReportProgress(achID, 100.0f, (bool success) => {
@@ -95,22 +94,24 @@ public class PlayServices : MonoBehaviour
             Social.ReportScore(pts, leaderboardGame, (bool success) => {
                 // handle success or failure
 
-            if (success)
-            {
-                scoreText.text = "Score: " + pts;
-            }
-            else
-            {
-                Debug.Log("Failed to update score");
-            }
+                if (success)
+                {
+                    pts = 0;
+                    scoreText.text = "Score: " + pts;
+                }
+                else
+                {
+                    Debug.Log("Failed to update score");
+                }
 
-        });
-    }
+            });
+        }
     }
 
     public void DisplayLeaderboard()
     {
-        Social.ShowLeaderboardUI();
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardGame);
+        //Social.ShowLeaderboardUI();
     }
 
     public void LogOut()
