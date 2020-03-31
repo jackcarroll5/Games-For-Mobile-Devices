@@ -5,6 +5,8 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms;
+using GooglePlayGames.BasicApi.SavedGame;
+using System;
 
 public class PlayServices : MonoBehaviour
 {
@@ -84,7 +86,7 @@ public class PlayServices : MonoBehaviour
     public void AddPoints()
     {
         pts = pts + 10;
-        scoreText.text = "Score: " + pts;
+        scoreText.text = "Score: " + pts.ToString();
     }
 
     public void AddLeaderboardScore()
@@ -97,7 +99,7 @@ public class PlayServices : MonoBehaviour
                 if (success)
                 {
                     pts = 0;
-                    scoreText.text = "Score: " + pts;
+                    scoreText.text = "Score: " + pts.ToString();
                 }
                 else
                 {
@@ -121,6 +123,116 @@ public class PlayServices : MonoBehaviour
         if (Social.localUser.authenticated == false)
         {
             Debug.Log("User has signed out of Google Play Services");
+        }
+    }
+
+    void ShowSelectUI()
+    {
+        uint maxNumToDisplay = 5;
+        bool allowCreateNew = false;
+        bool allowDelete = true;
+
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.ShowSelectSavedGameUI("Select saved game",
+            maxNumToDisplay,
+            allowCreateNew,
+            allowDelete,
+            OnSavedGameSelected);
+    }
+
+
+    public void OnSavedGameSelected(SelectUIStatus status, ISavedGameMetadata game)
+    {
+        if (status == SelectUIStatus.SavedGameSelected)
+        {
+            // handle selected game save
+        }
+        else
+        {
+            // handle cancel or error
+        }
+    }
+
+    void OpenSavedGame(string filename)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.OpenWithAutomaticConflictResolution(filename, DataSource.ReadCacheOrNetwork,
+            ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
+    }
+
+    public void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            // handle reading or writing of saved game.
+        }
+        else
+        {
+            // handle error
+        }
+    }
+
+    void LoadGameData(ISavedGameMetadata game)
+    {
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
+    }
+
+    public void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            // handle processing the byte array data
+        }
+        else
+        {
+            // handle error
+        }
+    }
+
+    public void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            // handle reading or writing of saved game.
+        }
+        else
+        {
+            // handle error
+        }
+    }
+
+    public Texture2D getScreenshot()
+    {
+        // Create a 2D texture that is 1024x700 pixels from which the PNG will be
+        // extracted
+        Texture2D screenShot = new Texture2D(1024, 700);
+
+        // Takes the screenshot from top left hand corner of screen and maps to top
+        // left hand corner of screenShot texture
+        screenShot.ReadPixels(
+            new Rect(0, 0, Screen.width, (Screen.width / 1024) * 700), 0, 0);
+        return screenShot;
+    }
+
+    void DeleteGameData(string filename)
+    {
+        // Open the file to get the metadata.
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+        savedGameClient.OpenWithAutomaticConflictResolution(filename, DataSource.ReadCacheOrNetwork,
+            ConflictResolutionStrategy.UseLongestPlaytime, DeleteSavedGame);
+    }
+
+    public void DeleteSavedGame(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.Delete(game);
+        }
+        else
+        {
+            // handle error
         }
     }
 
