@@ -10,6 +10,16 @@ public class ManageScenes : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public void IAPScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void ReturnToPlayServices()
+    {
+        SceneManager.LoadScene("PlayServices");
+    }
+
     public void BackToStart()
     {
         SceneManager.LoadScene("SampleScene");
