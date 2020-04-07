@@ -49,17 +49,17 @@ public class PlayServices : MonoBehaviour
     {
         // unlock achievement (achievement ID "Cfjewijawiu_QA")
         Social.ReportProgress(achID, 100.0f, (bool success) => {
-            // handle success or 
+            // handle success or failure
 
 
         });
     }
 
-    public void IncrementAchievements(string achID, int stepsToIncrement)
+    public void IncrementAchievements(string achID, int stepsForIncrementing)
     {
         // increment achievement (achievement ID "Cfjewijawiu_QA") by 5 steps
         PlayGamesPlatform.Instance.IncrementAchievement(
-            achID, stepsToIncrement, (bool success) => {
+            achID, stepsForIncrementing, (bool success) => {
             // handle success or failure
 
 
@@ -105,7 +105,6 @@ public class PlayServices : MonoBehaviour
                 {
                     Debug.Log("Failed to update score");
                 }
-
             });
         }
     }
@@ -146,10 +145,14 @@ public class PlayServices : MonoBehaviour
         if (status == SelectUIStatus.SavedGameSelected)
         {
             // handle selected game save
+
+
         }
         else
         {
             // handle cancel or error
+
+
         }
     }
 
@@ -165,10 +168,14 @@ public class PlayServices : MonoBehaviour
         if (status == SavedGameRequestStatus.Success)
         {
             // handle reading or writing of saved game.
+
+
         }
         else
         {
             // handle error
+
+
         }
     }
 
@@ -183,10 +190,16 @@ public class PlayServices : MonoBehaviour
         if (status == SavedGameRequestStatus.Success)
         {
             // handle processing the byte array data
+
+
+
         }
         else
         {
             // handle error
+
+
+
         }
     }
 
@@ -245,6 +258,9 @@ public class PlayServices : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(pts >= 100)
+        {
+            UnlockAchievements();
+        }
     }
 }
