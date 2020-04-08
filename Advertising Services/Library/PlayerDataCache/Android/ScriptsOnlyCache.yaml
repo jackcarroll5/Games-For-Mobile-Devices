@@ -10,6 +10,7 @@ ScriptsOnlyBuild:
     - InterstitialButton
     - ManageScenes
     - PlayServices
+    - PurchaseButtons
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     UnityEngine.UI.dll:
@@ -21,6 +22,57 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Image
     - UnityEngine.UI.Text
   sceneClasses:
+    Assets/Scenes/InAppPurchases.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9864}
+    - Class: 114
+      Script: {instanceID: 10066}
+    - Class: 114
+      Script: {instanceID: 10118}
+    - Class: 114
+      Script: {instanceID: 10602}
+    - Class: 114
+      Script: {instanceID: 11118}
+    - Class: 114
+      Script: {instanceID: 11628}
+    - Class: 114
+      Script: {instanceID: 11738}
+    - Class: 114
+      Script: {instanceID: 12090}
+    - Class: 114
+      Script: {instanceID: 12188}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
     Assets/Scenes/PlayServices.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -41,23 +93,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9860}
+      Script: {instanceID: 9864}
     - Class: 114
-      Script: {instanceID: 10062}
+      Script: {instanceID: 10066}
     - Class: 114
-      Script: {instanceID: 10114}
+      Script: {instanceID: 10118}
     - Class: 114
-      Script: {instanceID: 10596}
+      Script: {instanceID: 10602}
     - Class: 114
-      Script: {instanceID: 11108}
+      Script: {instanceID: 11118}
     - Class: 114
-      Script: {instanceID: 11722}
+      Script: {instanceID: 11738}
     - Class: 114
-      Script: {instanceID: 11744}
+      Script: {instanceID: 11760}
     - Class: 114
-      Script: {instanceID: 12074}
+      Script: {instanceID: 12090}
     - Class: 114
-      Script: {instanceID: 12172}
+      Script: {instanceID: 12188}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -94,33 +146,33 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9860}
+      Script: {instanceID: 9864}
     - Class: 114
-      Script: {instanceID: 10062}
+      Script: {instanceID: 10066}
     - Class: 114
-      Script: {instanceID: 10114}
+      Script: {instanceID: 10118}
     - Class: 114
-      Script: {instanceID: 10596}
+      Script: {instanceID: 10602}
     - Class: 114
-      Script: {instanceID: 10790}
+      Script: {instanceID: 10796}
     - Class: 114
-      Script: {instanceID: 10934}
+      Script: {instanceID: 10942}
     - Class: 114
-      Script: {instanceID: 11000}
+      Script: {instanceID: 11008}
     - Class: 114
-      Script: {instanceID: 11054}
+      Script: {instanceID: 11062}
     - Class: 114
-      Script: {instanceID: 11108}
+      Script: {instanceID: 11118}
     - Class: 114
-      Script: {instanceID: 11436}
+      Script: {instanceID: 11448}
     - Class: 114
-      Script: {instanceID: 11722}
+      Script: {instanceID: 11738}
     - Class: 114
-      Script: {instanceID: 11778}
+      Script: {instanceID: 11794}
     - Class: 114
-      Script: {instanceID: 12074}
+      Script: {instanceID: 12090}
     - Class: 114
-      Script: {instanceID: 12172}
+      Script: {instanceID: 12188}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -410,6 +462,12 @@ ScriptsOnlyBuild:
     className: Placeholder
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: IAP
+  - hash:
+      serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -498,6 +556,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: GoogleMobileAds.Common
     className: MobileAdsEventExecutor
+  - hash:
+      serializedVersion: 2
+      Hash: 89c56daf0872175e5846e2ffc5632a7b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PurchaseButtons
   - hash:
       serializedVersion: 2
       Hash: 3b760e6526e13f7504f59e210145899a
@@ -670,5 +734,6 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
   - Assets/Scenes/PlayServices.unity
+  - Assets/Scenes/InAppPurchases.unity
   playerPath: C:/Users/jackc/OneDrive/Documents/GitHub/Games-For-Mobile-Devices/Advertising
-    Services/Build/AdvertTest.apk
+    Services/Build/GPGSIAPAndAds.apk
