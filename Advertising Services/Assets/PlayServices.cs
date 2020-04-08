@@ -15,10 +15,13 @@ public class PlayServices : MonoBehaviour
     public Text scoreText;
     public string leaderboardGame;
     public string achID;
+    public static PlayGamesPlatform platformGame;
 
     // Start is called before the first frame update
     void Start()
     {
+      if (platformGame == null)
+       {       
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
         // enables saving game progress.
         .EnableSavedGames()
@@ -37,7 +40,8 @@ public class PlayServices : MonoBehaviour
 
         PlayGamesPlatform.DebugLogEnabled = true;
 
-        PlayGamesPlatform.Activate();
+        platformGame = PlayGamesPlatform.Activate();
+       }
     }
 
     public void DisplayAchievements()
