@@ -72,7 +72,7 @@ public class PlayServices : MonoBehaviour
 
     public void SignInToServices()
     {
-        Social.localUser.Authenticate((bool success) => {
+        Social.Active.localUser.Authenticate((bool success) => {
             // handle success or failure
 
             if(success == true)
