@@ -13,6 +13,7 @@ ScriptsOnlyBuild:
     - PurchaseButtons
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
+    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -594,7 +595,7 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 0712568f77853e3fda0089adc81aeca3
+      Hash: fd603770689195d8c21e05ad28422d62
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayServices

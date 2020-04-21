@@ -5,16 +5,14 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.UI;
 using UnityEngine.SocialPlatforms;
-using GooglePlayGames.BasicApi.SavedGame;
 using System;
+using GooglePlayGames.BasicApi.SavedGame;
 
 public class PlayServices : MonoBehaviour
 {
     public static PlayServices instanceObj;
     int pts = 0;
     public Text scoreText;
-    public string leaderboardGame;
-    public string achID;
     public static PlayGamesPlatform platformGame;
 
     // Start is called before the first frame update
@@ -22,25 +20,25 @@ public class PlayServices : MonoBehaviour
     {
       if (platformGame == null)
        {       
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-        // enables saving game progress.
-        .EnableSavedGames()
-        // requests the email address of the player be available.
-        // Will bring up a prompt for consent.
-        .RequestEmail()
-        // requests a server auth code be generated so it can be passed to an
-        //  associated back end server application and exchanged for an OAuth token.
-        .RequestServerAuthCode(false)
-        // requests an ID token be generated.  This OAuth token can be used to
-        //  identify the player to other services such as Firebase.
-        .RequestIdToken()
-        .Build();
+            PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+            // enables saving game progress.
+            //.EnableSavedGames()
+            // requests the email address of the player be available.
+            // Will bring up a prompt for consent.
+            .RequestEmail()
+            // requests a server auth code be generated so it can be passed to an
+            //  associated back end server application and exchanged for an OAuth token.
+            .RequestServerAuthCode(false)
+            // requests an ID token be generated.  This OAuth token can be used to
+            //  identify the player to other services such as Firebase.
+            .RequestIdToken()
+            .Build();
 
-        PlayGamesPlatform.InitializeInstance(config);
+            PlayGamesPlatform.InitializeInstance(config);
 
-        PlayGamesPlatform.DebugLogEnabled = true;
+            PlayGamesPlatform.DebugLogEnabled = true;
 
-        platformGame = PlayGamesPlatform.Activate();
+            platformGame = PlayGamesPlatform.Activate();
        }
     }
 
@@ -52,18 +50,19 @@ public class PlayServices : MonoBehaviour
     public void UnlockAchievements()
     {
         // unlock achievement (achievement ID "Cfjewijawiu_QA")
-        Social.ReportProgress(achID, 100.0f, (bool success) => {
+        Social.ReportProgress(GPGSIds.achievement_achievementforfirstplace, 100.0f, (bool success) => {
             // handle success or failure
 
 
         });
     }
 
+
     public void IncrementAchievements(string achID, int stepsForIncrementing)
     {
         // increment achievement (achievement ID "Cfjewijawiu_QA") by 5 steps
         PlayGamesPlatform.Instance.IncrementAchievement(
-            achID, stepsForIncrementing, (bool success) => {
+            GPGSIds.achievement_achievementforfirstplace, stepsForIncrementing, (bool success) => {
             // handle success or failure
 
 
@@ -72,7 +71,7 @@ public class PlayServices : MonoBehaviour
 
     public void SignInToServices()
     {
-        Social.Active.localUser.Authenticate((bool success) => {
+        Social.localUser.Authenticate((bool success) => {
             // handle success or failure
 
             if(success == true)
@@ -83,7 +82,6 @@ public class PlayServices : MonoBehaviour
             {
                 Debug.Log("Login Failed");
             }
-
         });
     }
 
@@ -97,7 +95,7 @@ public class PlayServices : MonoBehaviour
     {
         if (Social.localUser.authenticated)
         {
-            Social.ReportScore(pts, leaderboardGame, (bool success) => {
+            Social.ReportScore(pts, GPGSIds.leaderboard_pointsleaderboard, (bool success) => {
                 // handle success or failure
 
                 if (success)
@@ -115,7 +113,7 @@ public class PlayServices : MonoBehaviour
 
     public void DisplayLeaderboard()
     {
-        PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardGame);
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_pointsleaderboard);
         //Social.ShowLeaderboardUI();
     }
 
