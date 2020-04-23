@@ -1,5 +1,5 @@
-lastUpgrade=01007
-proj.pluginVersion=0.10.07
+lastUpgrade=01008
+proj.pluginVersion=0.10.08
 proj.AppId=578083078997
 and.BundleId=com.Jack.GPGSAndAds
 proj.classDir=Assets
