@@ -43,23 +43,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9864}
+      Script: {instanceID: 9874}
     - Class: 114
-      Script: {instanceID: 10066}
+      Script: {instanceID: 10078}
     - Class: 114
-      Script: {instanceID: 10118}
+      Script: {instanceID: 10130}
     - Class: 114
-      Script: {instanceID: 10602}
+      Script: {instanceID: 10624}
     - Class: 114
-      Script: {instanceID: 11118}
+      Script: {instanceID: 11148}
     - Class: 114
-      Script: {instanceID: 11628}
+      Script: {instanceID: 11668}
     - Class: 114
-      Script: {instanceID: 11738}
+      Script: {instanceID: 11780}
     - Class: 114
-      Script: {instanceID: 12090}
+      Script: {instanceID: 12136}
     - Class: 114
-      Script: {instanceID: 12188}
+      Script: {instanceID: 12234}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -94,23 +94,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9864}
+      Script: {instanceID: 9874}
     - Class: 114
-      Script: {instanceID: 10066}
+      Script: {instanceID: 10078}
     - Class: 114
-      Script: {instanceID: 10118}
+      Script: {instanceID: 10130}
     - Class: 114
-      Script: {instanceID: 10602}
+      Script: {instanceID: 10624}
     - Class: 114
-      Script: {instanceID: 11118}
+      Script: {instanceID: 11148}
     - Class: 114
-      Script: {instanceID: 11738}
+      Script: {instanceID: 11780}
     - Class: 114
-      Script: {instanceID: 11760}
+      Script: {instanceID: 11802}
     - Class: 114
-      Script: {instanceID: 12090}
+      Script: {instanceID: 12136}
     - Class: 114
-      Script: {instanceID: 12188}
+      Script: {instanceID: 12234}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -147,33 +147,33 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9864}
+      Script: {instanceID: 9874}
     - Class: 114
-      Script: {instanceID: 10066}
+      Script: {instanceID: 10078}
     - Class: 114
-      Script: {instanceID: 10118}
+      Script: {instanceID: 10130}
     - Class: 114
-      Script: {instanceID: 10602}
+      Script: {instanceID: 10624}
     - Class: 114
-      Script: {instanceID: 10796}
+      Script: {instanceID: 10822}
     - Class: 114
-      Script: {instanceID: 10942}
+      Script: {instanceID: 10970}
     - Class: 114
-      Script: {instanceID: 11008}
+      Script: {instanceID: 11036}
     - Class: 114
-      Script: {instanceID: 11062}
+      Script: {instanceID: 11090}
     - Class: 114
-      Script: {instanceID: 11118}
+      Script: {instanceID: 11148}
     - Class: 114
-      Script: {instanceID: 11448}
+      Script: {instanceID: 11488}
     - Class: 114
-      Script: {instanceID: 11738}
+      Script: {instanceID: 11780}
     - Class: 114
-      Script: {instanceID: 11794}
+      Script: {instanceID: 11840}
     - Class: 114
-      Script: {instanceID: 12090}
+      Script: {instanceID: 12136}
     - Class: 114
-      Script: {instanceID: 12188}
+      Script: {instanceID: 12234}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -485,6 +485,24 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RawImage
+  - hash:
+      serializedVersion: 2
+      Hash: cbe9b39ad540c96208a018691ff0bdfa
+    assemblyName: UDP.dll
+    namespaceName: UnityEngine.UDP
+    className: AppStoreSettings
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: UDP.dll
+    namespaceName: UnityEngine.UDP
+    className: MainThreadDispatcher
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: UDP.dll
+    namespaceName: UnityEngine.UDP
+    className: UdpGameManager
   - hash:
       serializedVersion: 2
       Hash: 5ad4aa237d47ac2bab17bacb672edf7a
