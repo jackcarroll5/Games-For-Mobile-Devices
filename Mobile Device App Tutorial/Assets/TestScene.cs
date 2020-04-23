@@ -7,6 +7,6 @@ public class TestScene : MonoBehaviour
 {
     public void TestingScene()
     {
-        SceneManager.LoadScene("SampleScene");
+       UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
     }
 }
