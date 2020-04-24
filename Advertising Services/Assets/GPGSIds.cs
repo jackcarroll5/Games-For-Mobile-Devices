@@ -25,6 +25,7 @@
 public static class GPGSIds
 {
         public const string achievement_achievementforfirstplace = "CgkI1Ya_w-kQEAIQAQ"; // <GPGSID>
+        public const string achievement_mile_fifty_club = "CgkI1Ya_w-kQEAIQCA"; // <GPGSID>
         public const string leaderboard_pointsleaderboard = "CgkI1Ya_w-kQEAIQAg"; // <GPGSID>
 
 }

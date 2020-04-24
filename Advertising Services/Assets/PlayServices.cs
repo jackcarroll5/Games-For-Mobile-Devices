@@ -17,9 +17,7 @@ public class PlayServices : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-      if (platformGame == null)
-       {       
+    {     
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             // enables saving game progress.
             //.EnableSavedGames()
@@ -28,18 +26,17 @@ public class PlayServices : MonoBehaviour
             .RequestEmail()
             // requests a server auth code be generated so it can be passed to an
             //  associated back end server application and exchanged for an OAuth token.
-            .RequestServerAuthCode(false)
+            //.RequestServerAuthCode(false)
             // requests an ID token be generated.  This OAuth token can be used to
             //  identify the player to other services such as Firebase.
-            .RequestIdToken()
+            //.RequestIdToken()
             .Build();
 
             PlayGamesPlatform.InitializeInstance(config);
 
             PlayGamesPlatform.DebugLogEnabled = true;
 
-            platformGame = PlayGamesPlatform.Activate();
-       }
+            PlayGamesPlatform.Activate();
     }
 
     public void DisplayAchievements()
@@ -52,19 +49,16 @@ public class PlayServices : MonoBehaviour
         // unlock achievement (achievement ID "Cfjewijawiu_QA")
         Social.ReportProgress(GPGSIds.achievement_achievementforfirstplace, 100.0f, (bool success) => {
             // handle success or failure
-
-
         });
     }
 
 
-    public void IncrementAchievements(string achID, int stepsForIncrementing)
+    public void IncrementAchievements()
     {
         // increment achievement (achievement ID "Cfjewijawiu_QA") by 5 steps
         PlayGamesPlatform.Instance.IncrementAchievement(
-            GPGSIds.achievement_achievementforfirstplace, stepsForIncrementing, (bool success) => {
+            GPGSIds.achievement_mile_fifty_club, 10, (bool success) => {
             // handle success or failure
-
 
         });
     }
