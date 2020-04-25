@@ -7,13 +7,16 @@ using UnityEngine.UI;
 using UnityEngine.SocialPlatforms;
 using System;
 using GooglePlayGames.BasicApi.SavedGame;
+using System.Text;
 
 public class PlayServices : MonoBehaviour
 {
     public static PlayServices instanceObj;
     int pts = 0;
     public Text scoreText;
+    public Text saveText;
     public static PlayGamesPlatform platformGame;
+    private bool isSavingData;
 
     // Start is called before the first frame update
     void Start()
@@ -121,7 +124,7 @@ public class PlayServices : MonoBehaviour
         }
     }
 
-    void ShowSelectUI()
+   public void ShowSelectUI()
     {
         uint maxNumToDisplay = 5;
         bool allowCreateNew = false;
@@ -141,41 +144,83 @@ public class PlayServices : MonoBehaviour
         if (status == SelectUIStatus.SavedGameSelected)
         {
             // handle selected game save
-
+            Debug.Log("Saved game has been selected");
 
         }
         else
         {
             // handle cancel or error
-
+            Debug.LogError("Saved game cannot be selected");
 
         }
     }
 
-    void OpenSavedGame(string filename)
+   public void OpenSavedGame(string filename)
     {
+        bool savingFile = false;
+
+        if (Social.localUser.authenticated)
+        {
+            isSavingData = savingFile;
+        
+
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(filename, DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
+        }
     }
 
     public void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
         if (status == SavedGameRequestStatus.Success)
-        {
-            // handle reading or writing of saved game.
+        { //Write
+            if (isSavingData)
+            {
+                ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 
+                byte[] data = ASCIIEncoding.ASCII.GetBytes(GetSavingString());
 
-        }
-        else
-        {
-            // handle error
+                SavedGameMetadataUpdate updateSave = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Saved at: " + DateTime.Now.ToString()).Build();
 
+                savedGameClient.CommitUpdate(game, updateSave, data, SaveUpdate);
 
+                saveText.text = "Game data written! " + status.ToString();
+
+                // handle reading or writing of saved game.
+                Debug.Log("Saved game written on cloud");
+
+            }
+            else
+            {
+                // Read
+                ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+                savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
+
+                saveText.text = "Game data read on cloud! " + status.ToString();
+
+                Debug.Log("Saved game read on cloud");
+
+            }
         }
     }
 
-    void LoadGameData(ISavedGameMetadata game)
+    private void SaveUpdate(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if(status == SavedGameRequestStatus.Success)
+        {
+            saveText.text = "Data saved successfully";
+            Debug.Log("Data saved successfully");
+        }
+        else
+        {
+            saveText.text = status.ToString() + " failed to save";
+            Debug.Log("Data failed to save");
+        }
+
+    }
+
+   public void LoadGameData(ISavedGameMetadata game)
     {
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
@@ -185,29 +230,47 @@ public class PlayServices : MonoBehaviour
     {
         if (status == SavedGameRequestStatus.Success)
         {
+            string savedGameData = ASCIIEncoding.ASCII.GetString(data);
+
+            saveText.text = "Data read successfully! " + savedGameData;
+
             // handle processing the byte array data
-
-
-
+            Debug.Log("Game data is being read");
         }
         else
         {
+            saveText.text = "Game data read failed! " + status.ToString();
             // handle error
-
-
-
+            Debug.LogError("Game data cannot be read!");
         }
+    }
+
+   public void SaveGame(ISavedGameMetadata game, byte[] savedData, TimeSpan totalPlaytime) {
+        
+        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+
+        SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+        builder = builder
+            .WithUpdatedPlayedTime(totalPlaytime)
+            .WithUpdatedDescription("Saved game at " + DateTime.Now);
+        
+        SavedGameMetadataUpdate updatedMetadata = builder.Build();
+        savedGameClient.CommitUpdate(game, updatedMetadata, savedData, OnSavedGameWritten);
     }
 
     public void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
         if (status == SavedGameRequestStatus.Success)
         {
+            saveText.text = "Save successful";
             // handle reading or writing of saved game.
+            Debug.Log("Save successful");
         }
         else
         {
+            saveText.text = "Saving failed! " + status.ToString();
             // handle error
+            Debug.LogError("Save failed! Could not save game!");
         }
     }
 
@@ -224,7 +287,7 @@ public class PlayServices : MonoBehaviour
         return screenShot;
     }
 
-    void DeleteGameData(string filename)
+   public void DeleteGameData(string filename)
     {
         // Open the file to get the metadata.
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
@@ -243,6 +306,13 @@ public class PlayServices : MonoBehaviour
         {
             // handle error
         }
+    }
+
+    private string GetSavingString()
+    {
+        string saveData = pts.ToString();
+
+        return saveData;
     }
 
     private void Awake()
