@@ -102,6 +102,7 @@ public class PlayServices : MonoBehaviour
                 }
                 else
                 {
+                    scoreText.text = "Score could not be updated!";
                     Debug.Log("Failed to update score");
                 }
             });
@@ -155,18 +156,15 @@ public class PlayServices : MonoBehaviour
         }
     }
 
-   public void OpenSavedGame(string filename)
+   public void OpenSavedGame(bool gameIsSaved)
     {
-        bool savingFile = false;
-
         if (Social.localUser.authenticated)
         {
-            isSavingData = savingFile;
+            isSavingData = gameIsSaved;
         
-
-        ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        savedGameClient.OpenWithAutomaticConflictResolution(filename, DataSource.ReadCacheOrNetwork,
-            ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.OpenWithAutomaticConflictResolution("PointsGame", DataSource.ReadCacheOrNetwork,
+                ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
         }
     }
 
