@@ -13,7 +13,6 @@ ScriptsOnlyBuild:
     - PurchaseButtons
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -613,7 +612,7 @@ ScriptsOnlyBuild:
     className: GraphicRaycaster
   - hash:
       serializedVersion: 2
-      Hash: fd603770689195d8c21e05ad28422d62
+      Hash: cbb55d35fe98db9cb952abd6dd6d9b05
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayServices
@@ -755,4 +754,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/PlayServices.unity
   - Assets/Scenes/InAppPurchases.unity
   playerPath: C:/Users/jackc/OneDrive/Documents/GitHub/Games-For-Mobile-Devices/Advertising
-    Services/Build/GPGSIAPAndAdsV0.2.aab
+    Services/Build/GPGSIAPAndAdsV0.2.apk
