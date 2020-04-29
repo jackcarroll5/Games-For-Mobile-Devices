@@ -16,14 +16,14 @@ public class PlayServices : MonoBehaviour
     public Text scoreText;
     public Text saveText;
     public static PlayGamesPlatform platformGame;
-    private bool isSavingData;
+    private bool isSavingData = false;
 
     // Start is called before the first frame update
     void Start()
     {     
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             // enables saving game progress.
-            //.EnableSavedGames()
+            .EnableSavedGames()
             // requests the email address of the player be available.
             // Will bring up a prompt for consent.
             .RequestEmail()
@@ -109,6 +109,19 @@ public class PlayServices : MonoBehaviour
         }
     }
 
+    public void playStats()
+    {
+        ((PlayGamesLocalUser)Social.localUser).GetStats((rc, stats) =>
+        {
+            // -1 means cached stats, 0 is succeess
+            // see  CommonStatusCodes for all values.
+            if (rc <= 0 && stats.HasDaysSinceLastPlayed())
+            {
+                Debug.Log("It has been " + stats.DaysSinceLastPlayed + " days");
+            }
+        });
+    }
+    
     public void DisplayLeaderboard()
     {
         PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_pointsleaderboard);
@@ -308,7 +321,7 @@ public class PlayServices : MonoBehaviour
 
     private string GetSavingString()
     {
-        string saveData = pts.ToString();
+        string saveData = scoreText.ToString();
 
         return saveData;
     }
