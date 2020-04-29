@@ -267,7 +267,7 @@ ScriptsOnlyBuild:
     className: BannerPlaceholder
   - hash:
       serializedVersion: 2
-      Hash: dc0fc8f9f7e3f6f0c466fa5bdfd240cc
+      Hash: 639fa410b6f4b945c95412fb63392797
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AdReward
@@ -489,7 +489,7 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
-      Hash: a4ab59432e1a3dc5dedbe8c4cf11d8ef
+      Hash: d4cb77c68e908a057ea90901b6ac9eda
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BannerButton
@@ -513,7 +513,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: 98481c9e93a96c93e150bed6754ce9f3
+      Hash: f93a20264375f186082677e6a9047ece
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: InterstitialButton
@@ -711,7 +711,7 @@ ScriptsOnlyBuild:
     className: BeforeAfterTestCommandState
   - hash:
       serializedVersion: 2
-      Hash: dc0fc8f9f7e3f6f0c466fa5bdfd240cc
+      Hash: 639fa410b6f4b945c95412fb63392797
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: AdRewardButton
@@ -847,4 +847,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/PlayServices.unity
   - Assets/Scenes/InAppPurchases.unity
   playerPath: C:/Users/jackc/OneDrive/Documents/GitHub/Games-For-Mobile-Devices/Advertising
-    Services/Build/GPGSIAPAndAdsV0.7.apk
+    Services/Build/GPGSIAPAndAdsV0.8.apk

@@ -11,14 +11,15 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
     bool testMode = true;
     Button button;
     public string interstitialID = "interstitial";
-
+    public Text result;
     public void OnUnityAdsDidError(string message)
     {
-   
+        result.text = "Interstitial Unity Ad has suffered from an error!";
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
+        result.text = "Interstitial Unity Ad has finished!";
         Debug.Log("Interstitial Ad closed");
         if (showResult == ShowResult.Finished)
         {
@@ -30,23 +31,25 @@ public class InterstitialButton : MonoBehaviour, IUnityAdsListener
         }
         else if (showResult == ShowResult.Skipped)
         {
+            result.text = "Interstitial Unity Ad has been skipped!";
             // Do not reward the user for skipping the ad.
             Debug.Log("Interstitial Ad has been skipped! No reward");
         }
         else if (showResult == ShowResult.Failed)
         {
+            result.text = "Interstitial Unity Ad did not finish playing!";
             Debug.LogWarning("The ad didn't finish due to an error.");
         }
     }
 
     public void OnUnityAdsDidStart(string placementId)
     {
-       
+        result.text = "Interstitial Unity Ad has started!";
     }
 
     public void OnUnityAdsReady(string placementId)
     {
-    
+        result.text = "Interstitial Unity Ad is ready!";
     }
 
     public void ShowInterstitial()

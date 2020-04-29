@@ -22,8 +22,6 @@ public class PlayServices : MonoBehaviour
     void Start()
     {     
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-            // enables saving game progress.
-            .EnableSavedGames()
             // requests the email address of the player be available.
             // Will bring up a prompt for consent.
             .RequestEmail()
@@ -221,14 +219,19 @@ public class PlayServices : MonoBehaviour
         if(status == SavedGameRequestStatus.Success)
         {
             saveText.text = "Data saved successfully";
-            Debug.Log("Data saved successfully");
+            Debug.Log("Data saved successfully: " + status);
         }
         else
         {
             saveText.text = status.ToString() + " failed to save";
-            Debug.Log("Data failed to save");
+            Debug.Log("Data failed to save: " + status);
         }
 
+    }
+
+   public void LoadStringSave(string savingData)
+    {
+        savingData = scoreText.text;
     }
 
    public void LoadGameData(ISavedGameMetadata game)
@@ -242,6 +245,8 @@ public class PlayServices : MonoBehaviour
         if (status == SavedGameRequestStatus.Success)
         {
             string savedGameData = ASCIIEncoding.ASCII.GetString(data);
+
+            LoadStringSave(savedGameData);
 
             saveText.text = "Data read successfully! " + savedGameData;
 
@@ -321,7 +326,9 @@ public class PlayServices : MonoBehaviour
 
     private string GetSavingString()
     {
-        string saveData = scoreText.ToString();
+        string saveData = "";
+
+        saveData += scoreText.ToString();
 
         return saveData;
     }

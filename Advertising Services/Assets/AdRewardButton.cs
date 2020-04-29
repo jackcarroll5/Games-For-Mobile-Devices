@@ -10,6 +10,7 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
     private string gameID = "3483542";
     Button button;
     public string myPlacementID = "rewardedVideo";
+    public Text status;
 
     // Start is called before the first frame update
     void Start()
@@ -44,37 +45,40 @@ public class AdRewardButton : MonoBehaviour,IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
-   
+        status.text = "Rewarded Unity Ad is ready!";
     }
 
     public void OnUnityAdsDidError(string message)
     {
-       
+        status.text = "Rewarded Unity Ad has suffered from an error!";
     }
 
     public void OnUnityAdsDidStart(string placementId)
     {
-       
+        status.text = "Rewarded Unity Ad has started!";
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
+        status.text = "Rewarded Unity Ad is finished!";
         Debug.Log("Rewarded Ad closed");
         if (showResult == ShowResult.Finished)
         {
             if(placementId == myPlacementID)
-            { 
-            // Reward the user for watching the ad to completion.
-            Debug.Log("Rewarded Ad has been finished! Reward Received");
+            {
+                // Reward the user for watching the ad to completion.
+                Debug.Log("Rewarded Ad has been finished! Reward Received!");
             }
         }
         else if (showResult == ShowResult.Skipped)
         {
+            status.text = "Rewarded Unity Ad has been skipped! No reward!";
             // Do not reward the user for skipping the ad.
-            Debug.Log("Rewarded Ad has been skipped! No reward");
+            Debug.Log("Rewarded Ad has been skipped! No reward!");
         }
         else if (showResult == ShowResult.Failed)
         {
+            status.text = "Rewarded Unity Ad failed to finish! No reward!";
             Debug.LogWarning("The ad did not finish due to an error.");
         }
     }

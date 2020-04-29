@@ -10,6 +10,7 @@ public class BannerButton : MonoBehaviour, IUnityAdsListener
     public string placementId = "banner";
     public bool testMode = true;
     Button button;
+    public Text banner;
 
     // Start is called before the first frame update
     void Start()
@@ -61,31 +62,34 @@ public class BannerButton : MonoBehaviour, IUnityAdsListener
 
     public void OnUnityAdsReady(string placementId)
     {
-   
+        banner.text = "Banner Unity Ad is ready!";
     }
 
     public void OnUnityAdsDidError(string message)
     {
-
+        banner.text = "Banner Unity Ad has suffered from an error!";
     }
 
     public void OnUnityAdsDidStart(string placementId)
     {
- 
+       
     }
 
     public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
     {
         if (showResult == ShowResult.Finished)
         {
+           
             // Reward the user for watching the ad to completion.
         }
         else if (showResult == ShowResult.Skipped)
         {
+            
             // Do not reward the user for skipping the ad.
         }
         else if (showResult == ShowResult.Failed)
         {
+           
             Debug.LogWarning("The ad did not finish due to an error.");
         }
     }
